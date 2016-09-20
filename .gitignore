@@ -28,3 +28,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# Escape Demo folder of Photon
+/Photon\ Unity\ Networking/Demos/
