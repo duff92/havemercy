@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.VR;
 
 public class ConnectAndJoinAvatar : Photon.MonoBehaviour {
 
@@ -8,8 +9,20 @@ public class ConnectAndJoinAvatar : Photon.MonoBehaviour {
 	public bool ConnectInUpdate = true;
 	public byte Version = 1;
 
+	public Camera BirdCamera;
+	public Camera VRCamera;
+
+
 	public virtual void Start() {
 		PhotonNetwork.autoJoinLobby = true;
+
+		if (VRSettings.enabled) {
+			BirdCamera.enabled = false;
+			VRCamera.enabled = true;
+		} else {
+			BirdCamera.enabled = true;
+			VRCamera.enabled = false;
+		}
 	}
 
 	public virtual void Update() {
