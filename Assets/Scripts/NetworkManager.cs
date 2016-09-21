@@ -31,8 +31,6 @@ public class NetworkManager : Photon.MonoBehaviour
         {
             birdCamera.enabled = false;
             vrCamera.enabled = true;
-
-            //PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
         }
         else
         {
@@ -85,5 +83,8 @@ public class NetworkManager : Photon.MonoBehaviour
     public void OnJoinedRoom()
     {
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
+
+        if (VRSettings.enabled) //Spawn guy if playing in VR
+            PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
     }
 }
