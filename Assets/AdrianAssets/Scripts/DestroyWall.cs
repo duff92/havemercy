@@ -4,10 +4,11 @@ using System.Collections;
 public class DestroyWall : Photon.MonoBehaviour
 {
 
-    public int lifetime = 500;
-	
-	// Update is called once per frame
-	void Update () {
+    public int lifetime = 5;
+
+
+    // Update is called once per frame
+    void Update () {
 	    if(lifetime == 0)
         {
             PhotonNetwork.Destroy(gameObject);
@@ -16,5 +17,5 @@ public class DestroyWall : Photon.MonoBehaviour
         {
             lifetime -= 1;
         }
-	}
+    }
 }
