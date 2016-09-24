@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TimerClock : MonoBehaviour {
 
-	float timeLeft = 120.0f;	// Seconds (2 minutes)
+	float timeLeft = 4.0f;	// Seconds (2 minutes)
 	bool stop = true;
 	float minutes;
 	float seconds;
@@ -52,12 +52,12 @@ public class TimerClock : MonoBehaviour {
 
 		myStyle = new GUIStyle (GUI.skin.GetStyle("label"));
 		myStyle.font = myFont;
-		myStyle.fontSize = 52;
-		GUI.Label (new Rect (100, 100, Screen.width / 8, Screen.height / 8), text.ToString(), myStyle);
+		myStyle.fontSize = 20;
+		GUI.Label (new Rect (10, 10, Screen.width / 4, Screen.height / 4), text.ToString(), myStyle);
 
 
 		if (minutes == 0 && seconds == 0) {
-			GUI.Label(new Rect (Screen.width-300, 100, Screen.width / 8, Screen.height / 8), "Game Over!", myStyle);
+			GUI.Label(new Rect (Screen.width-100, 10, Screen.width / 4, Screen.height / 4), "Game\nOver!", myStyle);
 		}
 		/* GUIStyle style = new GUIStyle();
 		GUI.skin.font = myFont;
