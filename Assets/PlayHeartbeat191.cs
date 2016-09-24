@@ -7,12 +7,13 @@ public class PlayHeartbeat191 : MonoBehaviour {
     GameObject[] wall;
     float playerPosX;
     float playerPosZ;
-    bool heartActive = true;
-    float closeCall = 3.0f;
+    bool activeRoutine;
+    float closeCall = 2.5f;
 
     // Use this for initialization
     void Start()
     {
+        activeRoutine = false;
         playerPosX = this.transform.position.x;
         playerPosZ = this.transform.position.z;
 
@@ -27,33 +28,37 @@ public class PlayHeartbeat191 : MonoBehaviour {
         wall = GameObject.FindGameObjectsWithTag("Wall");
         // Debug.Log("Amount in Tag Wall: " + wall.Length);
 
-        foreach (GameObject w in wall)
+        if (activeRoutine == false)
         {
-            if ((Mathf.Abs(playerPosX - w.transform.position.x) <= closeCall) && (Mathf.Abs(playerPosZ - w.transform.position.z) <= closeCall))
+
+            foreach (GameObject w in wall)
             {
-                if (heartActive)
+                if ((Mathf.Abs(playerPosX - w.transform.position.x) <= closeCall) && (Mathf.Abs(playerPosZ - w.transform.position.z) <= closeCall) && w.transform.position.y > 3.5f)
                 {
+                    Debug.Log("Active routine = " + activeRoutine);
+                    activeRoutine = true;
                     heartPumping();
-                    heartActive = false;
+                    Debug.Log("heartPumping() was called, activeRoutine = " + activeRoutine);
                 }
             }
+
         }
-        // Debug.Log(heartActive);
     }
 
     void heartPumping()
     {
+        Debug.Log("Set to true? " + activeRoutine);
         StartCoroutine(timeWait());
     }
 
     private IEnumerator timeWait()
     {
         heartbeat191.Play();
-        Debug.Log("Play() called");
+        // Debug.Log("Play() called");
         yield return new WaitForSeconds(5.0f);
         heartbeat191.Stop();
-        Debug.Log("Play() stopped");
-        heartActive = true;
+        activeRoutine = false;
+        // Debug.Log("Play() stopped");
     }
 
 }

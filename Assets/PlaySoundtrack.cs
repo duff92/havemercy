@@ -9,7 +9,7 @@ public class PlaySoundtrack : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         soundtrack = GetComponent<AudioSource>();
-
+        soundtrack.loop = false;
         soundtrack.spatialize = true;
         soundtrack.spatialBlend = 0.7f;
         soundtrack.reverbZoneMix = 0.65f;

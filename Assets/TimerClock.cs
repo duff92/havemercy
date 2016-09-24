@@ -57,7 +57,7 @@ public class TimerClock : MonoBehaviour {
 
 
 		if (minutes == 0 && seconds == 0) {
-			GUI.Label(new Rect (Screen.width-100, 25, Screen.width / 4, Screen.height / 4), "Game\nOver!", myStyle);
+			GUI.Label(new Rect (Screen.width-150, 25, Screen.width / 4, Screen.height / 4), "Game\nOver!", myStyle);
 		}
 		/* GUIStyle style = new GUIStyle();
 		GUI.skin.font = myFont;
