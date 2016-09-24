@@ -22,4 +22,10 @@ public class PlaySoundtrack : MonoBehaviour {
     void Update()
     {
     }
+
+    /*private IEnumerator playTimer()
+    {
+        yield return new WaitForSeconds(2.0f);
+        soundtrack.Play();
+    }*/
 }

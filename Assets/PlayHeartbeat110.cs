@@ -9,9 +9,8 @@ public class PlayHeartbeat110 : MonoBehaviour {
     void Start()
     {
         heartbeat110 = GetComponent<AudioSource>();
-        heartbeat110.mute = true;
-        /*heartbeat110.loop = true;
-        heartbeat110.volume = 0.1f;*/
+        heartbeat110.loop = true;
+        heartbeat110.volume = 0.1f;
     }
 
     // Update is called once per frame
