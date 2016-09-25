@@ -28,7 +28,6 @@ public class OnClickInstantiate : MonoBehaviour
         {
             case 0:
                 Vector3 wallposition = GetSpawnPosition(InputToEvent.inputHitPos.x, InputToEvent.inputHitPos.z);
-                Debug.Log("touch x: " + InputToEvent.inputHitPos.x + " z: " + InputToEvent.inputHitPos.z);
                 //instanciate walls aslong as there are fewer than 10 walls in the scene
                 GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
                 if (gol.Length < wall_amount)
@@ -60,7 +59,6 @@ public class OnClickInstantiate : MonoBehaviour
                     if (Physics.Raycast(ray, out hit)){
                         Vector3 hitpos = hit.point;
                         Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
-                        Debug.Log("touch x: " + hitpos.x + " z: " + hitpos.z);
 
                         //instanciate walls aslong as there are fewer than 10 walls in the scene
                         GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
@@ -127,28 +125,32 @@ public class OnClickInstantiate : MonoBehaviour
         }
         
         //check if click position is above the top edges of the hexagon (meaning its inside the hexagon tile above)
+        // change zIsOdd if you are in another row.
         float c = 0.5f;
         float m = c / (xstep * 0.5f);
         if ((relZ - 0.25f) > ((m * relX) + c)) //left edge
         {
-            Debug.Log("Topleft!");
+            //Debug.Log("Topleft!");
             zindex += 1;
             if (!zIsOdd)
             {
                 xindex -= 1;
             }
+            zIsOdd = !zIsOdd;
+
         }
         else if ((relZ - 0.25f) > (-m * relX) + c) //right edge
         {
-            Debug.Log("Topright!");
+            //Debug.Log("Topright!");
             zindex += 1;
             if (zIsOdd)
             {
                 xindex += 1;
             }
+            zIsOdd = !zIsOdd;
         }
-        Debug.Log("xindex: " + xindex + ",relx: " + relX);
-        Debug.Log("zindex: " + zindex + ",relz: " + relZ);
+        //Debug.Log("xindex: " + xindex + ",relx: " + relX);
+        //Debug.Log("zindex: " + zindex + ",relz: " + relZ);
         Vector3 spawnpos = new Vector3(xstep * xindex, 0, zstep * zindex);
         if (zIsOdd)
         {
