@@ -14,10 +14,11 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public byte Version = 1;
 
-    public bool vrmode = false;
-
     public string vrPlayerPrefabName = "Robot Animator";
     public GameObject vrPlayerSpawnPoint;
+
+    public string objective = "Objective";
+    private GameObject[] gos;
 
     /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
@@ -86,7 +87,19 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 
-        if (!VRSettings.enabled) //Spawn guy if playing in VR
+        if (!VRSettings.enabled)
+        {
+            //Spawn guy if playing in VR
             PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
+            //Spawn objective if playing in vr
+            PhotonNetwork.Instantiate(objective, new Vector3(0, 1.5f, 0), Quaternion.identity, 0);
+        }
+
+        //create objective prefab if you are first person to join room, so only one objective is created.
+        /*gos = GameObject.FindGameObjectsWithTag("objective");
+        if(gos.Length == 0)
+        {
+            
+        }*/
     }
 }
