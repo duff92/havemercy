@@ -10,33 +10,19 @@ using UnityEngine.VR;
 public class NetworkManager : Photon.MonoBehaviour
 {
     /// <summary>Connect automatically? If false you can set this to true later on or call ConnectUsingSettings in your own scripts.</summary>
-    public bool AutoConnect = true;
-
-    public byte Version = 1;
-
-    public string vrPlayerPrefabName = "Robot Animator";
-    public GameObject vrPlayerSpawnPoint;
-
-    /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
 
-    public Camera birdCamera;
-    public Camera vrCamera;
+    public bool AutoConnect = true;
+    public byte Version = 1;
+
+    public string vrPrefabName = "Robot Animator";
+    public string bvPrefabName = "BV Player";
+    public GameObject vrSpawnpoint;
+    public GameObject bvSpawnpoint;
 
     public virtual void Start()
     {
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
-
-        if (VRSettings.enabled)
-        {
-            birdCamera.enabled = false;
-            vrCamera.enabled = true;
-        }
-        else
-        {
-            birdCamera.enabled = true;
-            vrCamera.enabled = false;
-        }
     }
 
     public virtual void Update()
@@ -85,6 +71,8 @@ public class NetworkManager : Photon.MonoBehaviour
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 
         if (VRSettings.enabled) //Spawn guy if playing in VR
-            PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
+            PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.transform.position, vrSpawnpoint.transform.rotation, 0);
+        else //.. otherwise spawn birdview player
+            PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.transform.position, bvSpawnpoint.transform.rotation, 0);
     }
 }
