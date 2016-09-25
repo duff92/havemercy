@@ -14,6 +14,8 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public byte Version = 1;
 
+    public bool vrmode = false;
+
     public string vrPlayerPrefabName = "Robot Animator";
     public GameObject vrPlayerSpawnPoint;
 
@@ -27,7 +29,7 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
 
-        if (VRSettings.enabled)
+        if (!VRSettings.enabled) //fix for playermodes
         {
             birdCamera.enabled = false;
             vrCamera.enabled = true;
@@ -84,7 +86,7 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 
-        if (VRSettings.enabled) //Spawn guy if playing in VR
+        if (!VRSettings.enabled) //Spawn guy if playing in VR
             PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
     }
 }
