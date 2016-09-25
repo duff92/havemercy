@@ -16,13 +16,13 @@ public class ConnectAndJoinAvatar : Photon.MonoBehaviour {
 	public virtual void Start() {
 		PhotonNetwork.autoJoinLobby = true;
 
-		if (VRSettings.enabled) {
-			BirdCamera.enabled = false;
-			VRCamera.enabled = true;
-		} else {
-			BirdCamera.enabled = true;
-			VRCamera.enabled = false;
-		}
+//		if (GvrViewer.Instance.VRModeEnabled) {
+//			BirdCamera.enabled = false;
+//			VRCamera.enabled = true;
+//		} else {
+//			BirdCamera.enabled = true;
+//			VRCamera.enabled = false;
+//		}
 	}
 
 	public virtual void Update() {

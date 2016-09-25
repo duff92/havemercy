@@ -7,10 +7,7 @@ public class NetworkPlayer : Photon.MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-	    if(photonView.isMine)
-        {
-            GetComponent<Rigidbody>().useGravity = true;
-            //vrCamera.enabled = true;
-        }
+//	    if(photonView.isMine)
+//            GetComponent<Rigidbody>().useGravity = true;
 	}
 }

@@ -33,3 +33,6 @@ sysinfo.txt
 /Assets/Photon\ Unity\ Networking/Demos/
 /Assets/Photon\ Unity\ Networking/Demos.meta
 /Assets/Photon\ Unity\ Networking/
+
+# Escape Demo folder of GoogleCardboard
+Assets/GoogleVR/DemoScenes/
