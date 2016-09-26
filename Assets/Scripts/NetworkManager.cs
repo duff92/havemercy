@@ -16,6 +16,8 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public string vrPrefabName = "Robot Animator";
     public string bvPrefabName = "BV Player";
+	public Camera vrCamera;
+	public Camera bvCamera;
     public GameObject vrSpawnpoint;
     public GameObject bvSpawnpoint;
 
@@ -34,6 +36,16 @@ public class NetworkManager : Photon.MonoBehaviour
 
             ConnectInUpdate = false;
             PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
+
+			if (EnableBirdCamera) {
+				vrCamera.enabled = false;
+				bvCamera.enabled = true;
+			} 
+			else {
+				vrCamera.enabled = true;
+				bvCamera.enabled = false;
+			}
+	
         }
     }
 
@@ -71,8 +83,9 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 
-        if (EnableBirdCamera)
-            PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.transform.position, bvSpawnpoint.transform.rotation, 0);
+		if (EnableBirdCamera) {
+			PhotonNetwork.Instantiate (bvPrefabName, bvSpawnpoint.transform.position, bvSpawnpoint.transform.rotation, 0);
+			}
         else
             PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.transform.position, vrSpawnpoint.transform.rotation, 0);
     }
