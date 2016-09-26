@@ -30,7 +30,7 @@ public class OnClickInstantiate : MonoBehaviour
         {
             case 0:
                 Vector3 wallposition = GetSpawnPosition(InputToEvent.inputHitPos.x, InputToEvent.inputHitPos.z);
-                //instanciate walls aslong as there are fewer than 10 walls in the scene
+                //instanciate walls aslong as there are fewer than X walls in the scene
                 GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
                 if (gol.Length < wall_amount)
                 {
@@ -61,13 +61,17 @@ public class OnClickInstantiate : MonoBehaviour
                     if (Physics.Raycast(ray, out hit)){
                         Vector3 hitpos = hit.point;
                         Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
-
-                        //instanciate walls aslong as there are fewer than 10 walls in the scene
-                        GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
-                        if (gol.Length < wall_amount)
+                        //check if we create wall on top of another "thing"
+                        if(!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective"))
                         {
-                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                            //instanciate walls aslong as there are fewer than X walls in the scene
+                            GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
+                            if (gol.Length < wall_amount)
+                            {
+                                PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                            }
                         }
+
                     }
 
                 }
