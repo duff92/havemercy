@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class TimerClock : MonoBehaviour {
 
     public float timeLeft = 20.0f + 4.0f;	// Seconds (2 minutes) + countdown seconds
-	float minutes;
+	float minutes = 0.0f;
 	float seconds;
     bool stop = true;
 	Text clockText;
@@ -17,41 +17,40 @@ public class TimerClock : MonoBehaviour {
 	void Start () {
         anim = GetComponentInParent<Animator>();
         clockText = GetComponent<Text>();
-        startTimer(timeLeft);
-	}
-
-    void Update()
-    {
-        if (stop) return;
-        timeLeft -= Time.deltaTime;
-
-        minutes = Mathf.Floor(timeLeft / 60);
-        seconds = timeLeft % 60;
-        if (seconds > 59) seconds = 59;
-        if (minutes < 0)
+        if(PhotonNetwork.isMasterClient)
         {
-            stop = true;
-            minutes = 0;
-            seconds = 0;
+            Debug.Log("Is master client" + PhotonNetwork.isMasterClient); 
+            this.GetComponent<PhotonView>().RPC("startTimer", PhotonTargets.AllBuffered, PhotonNetwork.time);
         }
-    }
+        else
+        {
+            Debug.Log("NOT master client");
+        }
+	}
+   
 
     [PunRPC]
-	public void startTimer(float from){
+	public void startTimer(double from){
         Debug.Log("start Timer");
-        stop = false;
-        timeLeft = from;
-        Update();
-		StartCoroutine(updateCoroutine());
-	}
+        Debug.Log("Time: " + PhotonNetwork.time);
+        timeLeft -= (float)(PhotonNetwork.time - from);
+
+        StartCoroutine("updateCoroutine");
+        //      stop = false;
+        //      timeLeft = (float) from;
+        //      Update();
+        //StartCoroutine(updateCoroutine());
+    }
 
 	private IEnumerator updateCoroutine(){
 		while(timeLeft > 0)
         {
-            Debug.Log("seconds " + seconds);
-			clockText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
-			yield return new WaitForSeconds(0.2f);
-		}
+            Debug.Log("Time left: " + timeLeft);
+            clockText.text = string.Format("{0:0}:{1:00}", minutes, (float) timeLeft % 60);
+            //yield return new WaitForSeconds(0.2f);
+            yield return new WaitForEndOfFrame();
+            timeLeft -= Time.deltaTime;
+        }
         anim.SetTrigger("GameOver");
 	}
 }
