@@ -4,6 +4,8 @@ using System.Collections;
 public class OnClickInstantiate : MonoBehaviour
 {
     public GameObject Prefab;
+    public GameObject Prefab2;
+
     public int InstantiateType;
     private string[] InstantiateTypeNames = {"Mine", "Scene"};
     public int wall_amount = 20;
@@ -34,6 +36,7 @@ public class OnClickInstantiate : MonoBehaviour
                 {
                     PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
                 }
+                PhotonNetwork.Instantiate(Prefab2.name, new Vector3(0, 1.5f, 0), Quaternion.identity, 0);
                 break;
             case 1:
                 PhotonNetwork.InstantiateSceneObject(Prefab.name, InputToEvent.inputHitPos + new Vector3(0, 5f, 0), Quaternion.identity, 0, null);
