@@ -36,10 +36,6 @@ public class TimerClock : MonoBehaviour {
         timeLeft -= (float)(PhotonNetwork.time - from);
 
         StartCoroutine("updateCoroutine");
-        //      stop = false;
-        //      timeLeft = (float) from;
-        //      Update();
-        //StartCoroutine(updateCoroutine());
     }
 
 	private IEnumerator updateCoroutine(){

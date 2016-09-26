@@ -27,7 +27,7 @@ public class PlaySoundOnDrop : MonoBehaviour {
 		if (transform.position.y <= 3.0326f) {
 			walldrop.Play();
 			timerCurrent = System.DateTime.Now;
-			Debug.Log (timerCurrent - timerInit);
+			// Debug.Log (timerCurrent - timerInit);
 		}
 	}
 }
