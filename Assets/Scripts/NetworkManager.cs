@@ -16,8 +16,10 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public string vrPlayerPrefabName = "Robot Animator";
     public GameObject vrPlayerSpawnPoint;
-
+    
     public bool VRMode = true;
+    public string objective = "Objective";
+    private GameObject[] gos;
 
     /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
@@ -90,10 +92,11 @@ public class NetworkManager : Photon.MonoBehaviour
         if (VRSettings.enabled || VRMode) //Spawn guy if playing in VR 
         {
             PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
-        } else
-        {
-            HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
-        } 
+            //PhotonNetwork.Instantiate(objective, new Vector3(0, 1.5f, 0), Quaternion.identity,0);
+
+        }
+        HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
+
 
     }
 }
