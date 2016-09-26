@@ -92,14 +92,8 @@ public class NetworkManager : Photon.MonoBehaviour
             //Spawn guy if playing in VR
             PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
             //Spawn objective if playing in vr
-            PhotonNetwork.Instantiate(objective, new Vector3(0, 1.5f, 0), Quaternion.identity, 0);
+            //PhotonNetwork.Instantiate(objective, new Vector3(0, 1.5f, 0), Quaternion.identity,0);
         }
 
-        //create objective prefab if you are first person to join room, so only one objective is created.
-        /*gos = GameObject.FindGameObjectsWithTag("objective");
-        if(gos.Length == 0)
-        {
-            
-        }*/
     }
 }
