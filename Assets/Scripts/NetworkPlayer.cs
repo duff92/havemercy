@@ -18,12 +18,12 @@ public class NetworkPlayer : Photon.MonoBehaviour
     void Start()
     {
 //        if (photonView.isMine)
-//        {
-//            myCamera.enabled = true;
-//			if (GetComponent<GvrViewer> ()) {
-//			GetComponent<GvrViewer> ().VRModeEnabled = true;
+//        	{
+//				
+//				if (GetComponent<GvrViewer> ()) {
+//					myCamera.depth = 1;
+//				}
 //			}
-//        }
     }
 
     void Update()

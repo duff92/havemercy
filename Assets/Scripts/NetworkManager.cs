@@ -18,6 +18,7 @@ public class NetworkManager : Photon.MonoBehaviour
     public string bvPrefabName = "BV Player";
 	public Camera vrCamera;
 	public Camera bvCamera;
+	public GameObject vrPlayer;
     public GameObject vrSpawnpoint;
     public GameObject bvSpawnpoint;
 
@@ -25,7 +26,7 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public virtual void Start()
     {
-        PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
+        PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms
     }
 
     public virtual void Update()
@@ -36,15 +37,6 @@ public class NetworkManager : Photon.MonoBehaviour
 
             ConnectInUpdate = false;
             PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
-
-			if (EnableBirdCamera) {
-				vrCamera.enabled = false;
-				bvCamera.enabled = true;
-			} 
-			else {
-				vrCamera.enabled = true;
-				bvCamera.enabled = false;
-			}
 	
         }
     }
@@ -85,8 +77,12 @@ public class NetworkManager : Photon.MonoBehaviour
 
 		if (EnableBirdCamera) {
 			PhotonNetwork.Instantiate (bvPrefabName, bvSpawnpoint.transform.position, bvSpawnpoint.transform.rotation, 0);
-			}
-        else
-            PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.transform.position, vrSpawnpoint.transform.rotation, 0);
+			vrCamera.enabled = false;
+			bvCamera.enabled = true;
+			vrPlayer.GetComponent<GvrViewer> ().VRModeEnabled = false;
+		}
+		else{
+			Debug.Log ("gvrview");
+		}
     }
 }
