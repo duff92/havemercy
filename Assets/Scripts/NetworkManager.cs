@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
-using UnityEngine.VR;
 
 /// <summary>
 /// This script automatically connects to Photon (using the settings file),
@@ -9,36 +8,22 @@ using UnityEngine.VR;
 /// </summary>
 public class NetworkManager : Photon.MonoBehaviour
 {
-    /// <summary>Connect automatically? If false you can set this to true later on or call ConnectUsingSettings in your own scripts.</summary>
-    public bool AutoConnect = true;
 
-    public byte Version = 1;
-
-    public string vrPlayerPrefabName = "Robot Animator";
-    public GameObject vrPlayerSpawnPoint;
-
-	public bool EnableBirdCamera = true;
-
-    /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
 
-    public Camera birdCamera;
-    public Camera vrCamera;
+    public bool AutoConnect = true;
+    public byte Version = 1;
+
+    public string vrPrefabName = "Robot Animator";
+    public string bvPrefabName = "BV Player";
+    public GameObject vrSpawnpoint;
+    public GameObject bvSpawnpoint;
+
+    public bool EnableBirdCamera;
 
     public virtual void Start()
     {
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
-
-		if (EnableBirdCamera)
-        {
-            birdCamera.enabled = true;
-            vrCamera.enabled = false;
-        }
-        else
-        {
-			birdCamera.enabled = false;
-			vrCamera.enabled = true;
-        }
     }
 
     public virtual void Update()
@@ -86,10 +71,9 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 
-		if (!EnableBirdCamera) 
-		{
-			PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
-			GvrViewer.Instance.VRModeEnabled = true;
-		} //Spawn guy if playing in VR
+        if (EnableBirdCamera)
+            PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.transform.position, bvSpawnpoint.transform.rotation, 0);
+        else
+            PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.transform.position, vrSpawnpoint.transform.rotation, 0);
     }
 }
