@@ -17,7 +17,7 @@ public class NetworkManager : Photon.MonoBehaviour
     public string vrPlayerPrefabName = "Robot Animator";
     public GameObject vrPlayerSpawnPoint;
     
-    public bool VRMode = true;
+    public bool VRMode;
     public string objective = "Objective";
     private GameObject[] gos;
 
@@ -27,12 +27,13 @@ public class NetworkManager : Photon.MonoBehaviour
     public Camera birdCamera;
     public Camera vrCamera;
     public GameObject HUDCanvas;
+    public GameObject startButton;
 
     public virtual void Start()
     {
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
 
-        if (VRSettings.enabled || VRMode)
+        if (VRMode)
         {
             birdCamera.enabled = false;
             vrCamera.enabled = true;
@@ -63,13 +64,15 @@ public class NetworkManager : Photon.MonoBehaviour
     public virtual void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
-        PhotonNetwork.JoinRandomRoom();
+        //PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.JoinOrCreateRoom("Sven", new RoomOptions() { MaxPlayers = 4 }, null);
     }
 
     public virtual void OnJoinedLobby()
     {
         Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
-        PhotonNetwork.JoinRandomRoom();
+        //PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.JoinOrCreateRoom("Sven", new RoomOptions() { MaxPlayers = 4 }, null);
     }
 
     public virtual void OnPhotonRandomJoinFailed()
@@ -89,14 +92,17 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
         
-        if (VRSettings.enabled || VRMode) //Spawn guy if playing in VR 
+        if (VRMode) //Spawn guy if playing in VR 
         {
             PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
             //PhotonNetwork.Instantiate(objective, new Vector3(0, 1.5f, 0), Quaternion.identity,0);
-
+            startButton.SetActive(false);
         }
         HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
+    }
 
-
+    public void OnStartButtonClick()
+    {
+        birdCamera.GetComponent<PhotonView>().RPC("StartGameAnimation", PhotonTargets.AllBuffered);
     }
 }

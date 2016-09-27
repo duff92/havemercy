@@ -17,15 +17,8 @@ public class TimerClock : MonoBehaviour {
 	void Start () {
         anim = GetComponentInParent<Animator>();
         clockText = GetComponent<Text>();
-        if(PhotonNetwork.isMasterClient)
-        {
-            Debug.Log("Is master client" + PhotonNetwork.isMasterClient); 
-            this.GetComponent<PhotonView>().RPC("startTimer", PhotonTargets.AllBuffered, PhotonNetwork.time);
-        }
-        else
-        {
-            Debug.Log("NOT master client");
-        }
+        
+        this.GetComponent<PhotonView>().RPC("startTimer", PhotonTargets.AllBuffered, PhotonNetwork.time);
 	}
    
 
