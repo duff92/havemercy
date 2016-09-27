@@ -95,7 +95,7 @@ public class NetworkManager : Photon.MonoBehaviour
         if (VRMode) //Spawn guy if playing in VR 
         {
             PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
-            //PhotonNetwork.Instantiate(objective, new Vector3(0, 1.5f, 0), Quaternion.identity,0);
+            //PhotonNetwork.Instantiate(objective, new Vector3({, 1.5f, 0), Quaternion.identity,0);
             startButton.SetActive(false);
         }
         HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
