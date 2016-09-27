@@ -83,6 +83,7 @@ public class NetworkManager : Photon.MonoBehaviour
 		}
 		else{
 			Debug.Log ("gvrview");
+//			vrCamera.enabled = true;
 			bvCamera.enabled = false;
 		}
     }
