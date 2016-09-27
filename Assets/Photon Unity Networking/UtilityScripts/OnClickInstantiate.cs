@@ -20,6 +20,9 @@ public class OnClickInstantiate : MonoBehaviour
 
     void OnClick()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (!PhotonNetwork.inRoom)
         {
             // only use PhotonNetwork.Instantiate while in a room.
@@ -45,6 +48,9 @@ public class OnClickInstantiate : MonoBehaviour
 
     void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (!PhotonNetwork.inRoom)
         {
             // only use PhotonNetwork.Instantiate while in a room.
@@ -62,14 +68,16 @@ public class OnClickInstantiate : MonoBehaviour
                         Vector3 hitpos = hit.point;
                         Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
 
-                        //instanciate walls aslong as there are fewer than 10 walls in the scene
-                        GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
-                        if (gol.Length < wall_amount)
+                        if(!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective"))
                         {
-                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                            //instanciate walls aslong as there are fewer than 10 walls in the scene
+                            GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
+                            if (gol.Length < wall_amount)
+                            {
+                                PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                            }
                         }
                     }
-
                 }
                 break;
             case 1:
