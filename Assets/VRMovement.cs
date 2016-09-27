@@ -11,13 +11,14 @@ public class VRMovement : MonoBehaviour {
 	// get the rotation angle, and let batman rotate
 	private void Update()
 	{
-		float translation = CrossPlatformInputManager.GetAxis ("Vertical") * speed;
+		float translation = CrossPlatformInputManager.GetAxis ("Horizontal") * speed;
 		//float rotation = CrossPlatformInputManager.GetAxis ("Horizontal") * rotationSpeed;
 	
 
 		translation *= Time.deltaTime;
 		//rotation *= Time.deltaTime;
 		transform.Translate (0, 0, translation);
+		transform.position = new Vector3 (transform.position.x, 0.29f, transform.position.z);
 		//transform.rotation = GvrController.Orientation;
 	}
 
