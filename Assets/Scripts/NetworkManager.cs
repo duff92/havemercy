@@ -20,6 +20,7 @@ public class NetworkManager : Photon.MonoBehaviour
     public GameObject HUDCanvas;
     public GameObject startButton;
     public GameObject restartButton;
+    public Camera sceneCamera;
 
     private string vrPrefabName = "VR Player";
     private string bvPrefabName = "BV Player";
@@ -52,6 +53,7 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
         PhotonNetwork.JoinOrCreateRoom("Sven", new RoomOptions() { MaxPlayers = 4 }, null);
+        
     }
 
     // the following methods are implemented to give you some context. re-implement them as needed.
@@ -63,6 +65,7 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public void OnJoinedRoom()
     {
+        sceneCamera.enabled = true;
         if (VRMode)
         {
             PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
@@ -72,7 +75,7 @@ public class NetworkManager : Photon.MonoBehaviour
         {
             PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);
         }
-
+        sceneCamera.enabled = false;
         HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
     }
 
