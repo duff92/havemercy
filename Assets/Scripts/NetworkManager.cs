@@ -9,40 +9,26 @@ using UnityEngine.VR;
 /// </summary>
 public class NetworkManager : Photon.MonoBehaviour
 {
-    /// <summary>Connect automatically? If false you can set this to true later on or call ConnectUsingSettings in your own scripts.</summary>
-    public bool AutoConnect = true;
 
+    public bool AutoConnect = true;
     public byte Version = 1;
 
-    public string vrPlayerPrefabName = "Robot Animator";
-    public GameObject vrPlayerSpawnPoint;
-    
+    public Transform vrSpawnpoint;
+    public Transform bvSpawnpoint;
     public bool VRMode;
-    public string objective = "Objective";
-    private GameObject[] gos;
 
-    /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
-    private bool ConnectInUpdate = true;
-
-    public Camera birdCamera;
-    public Camera vrCamera;
     public GameObject HUDCanvas;
     public GameObject startButton;
+    public GameObject restartButton;
 
+    private string vrPrefabName = "VR Player";
+    private string bvPrefabName = "BV Player";
+
+    private bool ConnectInUpdate = true;
+    
     public virtual void Start()
     {
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
-
-        if (VRMode)
-        {
-            birdCamera.enabled = false;
-            vrCamera.enabled = true;
-        }
-        else
-        {
-            birdCamera.enabled = true;
-            vrCamera.enabled = false;
-        }
     }
 
     public virtual void Update()
@@ -56,29 +42,16 @@ public class NetworkManager : Photon.MonoBehaviour
         }
     }
 
-
-    // below, we implement some callbacks of PUN
-    // you can find PUN's callbacks in the class PunBehaviour or in enum PhotonNetworkingMessage
-
-
     public virtual void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
-        //PhotonNetwork.JoinRandomRoom();
         PhotonNetwork.JoinOrCreateRoom("Sven", new RoomOptions() { MaxPlayers = 4 }, null);
     }
 
     public virtual void OnJoinedLobby()
     {
         Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
-        //PhotonNetwork.JoinRandomRoom();
         PhotonNetwork.JoinOrCreateRoom("Sven", new RoomOptions() { MaxPlayers = 4 }, null);
-    }
-
-    public virtual void OnPhotonRandomJoinFailed()
-    {
-        Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
-        PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 4 }, null);
     }
 
     // the following methods are implemented to give you some context. re-implement them as needed.
@@ -90,19 +63,28 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public void OnJoinedRoom()
     {
-        Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
-        
-        if (VRMode) //Spawn guy if playing in VR 
+        if (VRMode)
         {
-            PhotonNetwork.Instantiate(vrPlayerPrefabName, vrPlayerSpawnPoint.transform.position, vrPlayerSpawnPoint.transform.rotation, 0);
-            //PhotonNetwork.Instantiate(objective, new Vector3({, 1.5f, 0), Quaternion.identity,0);
+            PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
             startButton.SetActive(false);
+            restartButton.SetActive(false);
+        } else
+        {
+            PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);
         }
+
         HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
     }
 
+
     public void OnStartButtonClick()
     {
-        birdCamera.GetComponent<PhotonView>().RPC("StartGameAnimation", PhotonTargets.AllBuffered);
+        this.GetComponent<PhotonView>().RPC("StartGameAnimation", PhotonTargets.AllBuffered);
+    }
+
+    [PunRPC]
+    public void StartGameAnimation()
+    {
+        this.HUDCanvas.GetComponent<Animator>().SetTrigger("StartGame");
     }
 }

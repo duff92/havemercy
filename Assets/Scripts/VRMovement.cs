@@ -19,7 +19,7 @@ public class VRMovement : MonoBehaviour
         translation *= Time.deltaTime;
         //rotation *= Time.deltaTime;
         transform.Translate(0, 0, translation);
-        transform.position = new Vector3(transform.position.x, 0.29f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, 1.0f, transform.position.z);
         //transform.rotation = GvrController.Orientation;
     }
 }

@@ -40,6 +40,7 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
     {
         if (other.tag == "Player")
         {
+            Debug.Log("SVEN!");
             player = other.gameObject;
             playerpos = new Vector2(player.transform.position.x, player.transform.position.z);
             /*dist = mindist;
