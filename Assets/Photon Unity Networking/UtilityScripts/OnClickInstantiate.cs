@@ -7,7 +7,7 @@ public class OnClickInstantiate : MonoBehaviour
     public GameObject Prefab;
 
     public int InstantiateType;
-    private string[] InstantiateTypeNames = {"Mine", "Scene"};
+    private string[] InstantiateTypeNames = { "Mine", "Scene" };
     public int wall_amount = 20;
 
     private float xstep = 1.732f;
@@ -15,8 +15,12 @@ public class OnClickInstantiate : MonoBehaviour
 
     Ray ray;
     RaycastHit hit;
-
+    Camera cam;
     public bool showGui;
+
+    void Start()
+    {
+    }
 
     void OnClick()
     {
@@ -56,19 +60,19 @@ public class OnClickInstantiate : MonoBehaviour
             // only use PhotonNetwork.Instantiate while in a room.
             return;
         }
-
         switch (InstantiateType)
         {
             case 0:
                 //touchbased input instead of clicks
-                if (Input.touchCount > 0)
+                /*if (Input.touchCount > 0)
                 {
                     ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                    if (Physics.Raycast(ray, out hit)){
+                    if (Physics.Raycast(ray, out hit))
+                    {
                         Vector3 hitpos = hit.point;
                         Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
 
-                        if(!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective"))
+                        if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective"))
                         {
                             //instanciate walls aslong as there are fewer than 10 walls in the scene
                             GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
@@ -79,6 +83,24 @@ public class OnClickInstantiate : MonoBehaviour
                         }
                     }
                 }
+                if (Input.GetMouseButton(0))
+                {
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        Vector3 hitpos = hit.point;
+                        Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
+                        if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective"))
+                        {
+                            //instanciate walls aslong as there are fewer than 10 walls in the scene
+                            GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
+                            if (gol.Length < wall_amount)
+                            {
+                                PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                            }
+                        }
+                    }
+                }*/
                 break;
             case 1:
                 PhotonNetwork.InstantiateSceneObject(Prefab.name, InputToEvent.inputHitPos + new Vector3(0, 5f, 0), Quaternion.identity, 0, null);
@@ -133,7 +155,7 @@ public class OnClickInstantiate : MonoBehaviour
         {
             relX = x - (xindex * xstep);
         }
-        
+
         //check if click position is above the top edges of the hexagon (meaning its inside the hexagon tile above)
         // change zIsOdd if you are in another row.
         float c = 0.5f;

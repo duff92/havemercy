@@ -22,7 +22,12 @@ public class TimerClock : MonoBehaviour
 
         Debug.Log("Is master client" + PhotonNetwork.isMasterClient);
         if (PhotonNetwork.isMasterClient)
-            this.GetComponent<PhotonView>().RPC("startTimer", PhotonTargets.AllBuffered, PhotonNetwork.time);
+            this.GetComponent<PhotonView>().RPC("startTimer", PhotonTargets.All, PhotonNetwork.time);
+    }
+
+    public void resetTime()
+    {
+        this.GetComponent<PhotonView>().RPC("startTimer", PhotonTargets.All, PhotonNetwork.time);
     }
 
 
@@ -39,7 +44,7 @@ public class TimerClock : MonoBehaviour
         while (timeLeft > 0)
         {
             if(clockText != null)
-                clockText.text = string.Format("{0:0}:{1:00}", minutes, (float)timeLeft % 60);
+                clockText.text = string.Format("{0:0}:{1:00}", Mathf.Floor(timeLeft / 60), (float)timeLeft % 60);
             //yield return new WaitForSeconds(0.2f);
             yield return new WaitForEndOfFrame();
             timeLeft -= Time.deltaTime;

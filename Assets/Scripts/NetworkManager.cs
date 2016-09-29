@@ -15,6 +15,7 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public Transform vrSpawnpoint;
     public Transform bvSpawnpoint;
+    public Transform objSpawnpoint;
     public bool VRMode;
 
     public GameObject HUDCanvas;
@@ -24,8 +25,10 @@ public class NetworkManager : Photon.MonoBehaviour
 
     private string vrPrefabName = "VR Player";
     private string bvPrefabName = "BV Player";
+    private string objPrefabName = "Objective";
 
     private bool ConnectInUpdate = true;
+    private int state = 0;
     
     public virtual void Start()
     {
@@ -46,13 +49,13 @@ public class NetworkManager : Photon.MonoBehaviour
     public virtual void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
-        PhotonNetwork.JoinOrCreateRoom("Sven", new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom("Sven2", new RoomOptions() { MaxPlayers = 4 }, null);
     }
 
     public virtual void OnJoinedLobby()
     {
         Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
-        PhotonNetwork.JoinOrCreateRoom("Sven", new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom("Sven2", new RoomOptions() { MaxPlayers = 4 }, null);
         
     }
 
@@ -79,10 +82,20 @@ public class NetworkManager : Photon.MonoBehaviour
         HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
     }
 
+    void OnCreatedRoom()
+    {
+        PhotonNetwork.InstantiateSceneObject(objPrefabName, objSpawnpoint.position, objSpawnpoint.rotation, 0, null);
+    }
 
     public void OnStartButtonClick()
     {
-        this.GetComponent<PhotonView>().RPC("StartGameAnimation", PhotonTargets.AllBuffered);
+        if(state == 0)
+        { 
+            this.GetComponent<PhotonView>().RPC("StartGameAnimation", PhotonTargets.All);
+        } else
+        {
+            HUDCanvas.GetComponent<Animator>().SetTrigger("StartGame");
+        }
     }
 
     [PunRPC]

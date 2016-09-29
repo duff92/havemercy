@@ -3,68 +3,64 @@ using System.Collections;
 
 public class ObjectiveHandler : Photon.MonoBehaviour {
 
-    public int winNr = 6;
-    public float mindist = 7;
-    private float dist;
-    private Vector2 newpos;
-    private Vector3 newpos3d = new Vector3(0f, 1.5f, 0f);
-    private GameObject player;
-    private Vector2 playerpos;
+    public Transform objectivePosition;
+    private int currentObjectivePosition;
+    private Vector3 nextPosition;
 
     private Vector3[] positionlist = new Vector3[6];
-    private Vector3 bottomrightcorner = new Vector3(10.39226f, 1.5f, -17.99931f);
-    private Vector3 bottomleftcorner = new Vector3(-10.39187f,1.5f, -17.99924f);
-    private Vector3 rightcorner = new Vector3(20.78427f, 1.5f, 0f);
-    private Vector3 leftcorner = new Vector3(-20.78427f, 1.5f, 0f);
-    private Vector3 toprightcorner = new Vector3(10.39226f, 1.5f, 17.99931f);
-    private Vector3 topleftcorner = new Vector3(-10.39187f, 1.5f, 17.99924f);
+    private Vector3 startPosition = new Vector3(0, 1.0f, 0);
+    private Vector3 bottomleftcorner = new Vector3(-10.39187f,1.0f, -17.99924f);
+    private Vector3 rightcorner = new Vector3(-16.45444f, 1.0f, -1.499697f);
+    private Vector3 leftcorner = new Vector3(8.66015f, 1.0f, 14.99981f);
+    private Vector3 toprightcorner = new Vector3(-5.195637f, 1.0f, -14.9991f);
+    private Vector3 topleftcorner = new Vector3(-6.928443f, 1.0f, 14.99982f);
+
+    private double time = 0.0f;
 
     // Use this for initialization
     void Start () {
-
-        positionlist[0] = bottomrightcorner;
+        positionlist[0] = startPosition;
         positionlist[1] = bottomleftcorner;
         positionlist[2] = rightcorner;
         positionlist[3] = leftcorner;
         positionlist[4] = toprightcorner;
         positionlist[5] = topleftcorner;
+
+        currentObjectivePosition = positionlist.Length - 1;
+        nextPosition = positionlist[0];
     }
-	
-	// Update is called once per frame
-	void Update () {
-        //kanske borde ha en random nummer som skapas på vrspelaren, så läser båda bollarna från den för sin random ordning
-        transform.position = Vector3.MoveTowards(transform.position, newpos3d, 20 * Time.deltaTime);
+
+    void Update()
+    {
+        if(nextPosition != transform.position)
+            GetComponent<PhotonView>().RPC("UpdateObjectivePosition", PhotonTargets.MasterClient);
     }
 
     void OnTriggerEnter(Collider other)
     {
+        if (Network.time - time < 2.0f)
+            return;
+        time = Network.time;
+
         if (other.tag == "Player")
         {
-            Debug.Log("SVEN!");
-            player = other.gameObject;
-            playerpos = new Vector2(player.transform.position.x, player.transform.position.z);
-            /*dist = mindist;
-            while(dist <= mindist)
-            {
-                newpos = Random.insideUnitCircle * 18;
-                dist = Vector2.Distance(newpos, playerpos);
-            }*/
-            winNr -= 1;
-            //newpos3d = new Vector3(newpos.x, 1.5f, newpos.y);
+            Debug.Log("Trigger!");
 
-            if(winNr < 0)
+            if (currentObjectivePosition == 0)
             {
-                Debug.Log("winner!");
-                winNr = 5;
+                currentObjectivePosition = positionlist.Length - 1;
+            } else
+            {
+                currentObjectivePosition--;
             }
-            newpos3d = positionlist[winNr];
-            /*winNr -= 1;
-            if(winNr == 0)
-            {
-                Debug.Log("You win");
-                winNr = 5;
-            }*/
+
+            nextPosition = positionlist[currentObjectivePosition];
         }
     }
 
+    [PunRPC]
+    void UpdateObjectivePosition()
+    {
+        this.GetComponent<Transform>().position = Vector3.MoveTowards(this.GetComponent<Transform>().position, nextPosition, 20 * Time.deltaTime);
+    }
 }

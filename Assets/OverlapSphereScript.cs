@@ -13,8 +13,8 @@ public class OverlapSphereScript : MonoBehaviour
     //use arraylist instead
 
     public ArrayList wallist = new ArrayList();
+    public ArrayList firstneighbours = new ArrayList();
     //public GameObject[] wallist;
-
 
     // Use this for initialization
     void Start()
@@ -27,9 +27,11 @@ public class OverlapSphereScript : MonoBehaviour
             if (colliders[i].gameObject.tag == "Wall")
             {
                 wallist.Add(colliders[i].gameObject);
+                firstneighbours.Add(colliders[i].gameObject);
+
                 if (wallist.Count > (wallrowcap + 1))
                 {
-                    Debug.Log(wallist.Count);
+                    wallist.Remove(this.gameObject);
                     PhotonNetwork.Destroy(gameObject);
                     return;
                     //alternatively:
@@ -38,13 +40,10 @@ public class OverlapSphereScript : MonoBehaviour
             }
             i++;
         }
-        //go through all neighbours and check for more wallneighbours
-        foreach (GameObject go in wallist)
+        //go through all the "first" neighbours of the wall and check for their wallneighbours
+        foreach (GameObject go in firstneighbours)
         {
-            if (go != this.gameObject)
-            {
-                checkOtherWallNeighbours(go);
-            }
+            checkOtherWallNeighbours(go);
         }
 
     }
@@ -64,10 +63,9 @@ public class OverlapSphereScript : MonoBehaviour
             if (coll[i].gameObject.tag == "Wall" && !wallist.Contains(coll[i].gameObject)) //check if collider is wall and not in list
             {
                 wallist.Add(coll[i].gameObject);
-
-                if (wallist.Count > (wallrowcap + 1))
+                if (wallist.Count > (wallrowcap + 1)) //remove wall (aka not spawn it) if there already is 4 walls in clumped together
                 {
-                    Debug.Log("recursion error");
+                    wallist.Remove(gameObject);
                     PhotonNetwork.Destroy(gameObject);
                     return;
                     //alternatively:
@@ -78,5 +76,4 @@ public class OverlapSphereScript : MonoBehaviour
             i++;
         }
     }
-
 }
