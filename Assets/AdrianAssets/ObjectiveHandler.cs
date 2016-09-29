@@ -9,7 +9,7 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
 
     private Vector3[] positionlist = new Vector3[6];
     private Vector3 startPosition = new Vector3(0, 1.0f, 0);
-    private Vector3 bottomleftcorner = new Vector3(-10.39187f,1.0f, -17.99924f);
+    private Vector3 bottomleftcorner = new Vector3(19.05238f, 1.0f, 0f);
     private Vector3 rightcorner = new Vector3(-16.45444f, 1.0f, -1.499697f);
     private Vector3 leftcorner = new Vector3(8.66015f, 1.0f, 14.99981f);
     private Vector3 toprightcorner = new Vector3(-5.195637f, 1.0f, -14.9991f);
@@ -26,7 +26,7 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
         positionlist[4] = toprightcorner;
         positionlist[5] = topleftcorner;
 
-        currentObjectivePosition = positionlist.Length - 1;
+        currentObjectivePosition = 0;
         nextPosition = positionlist[0];
     }
 
@@ -44,7 +44,7 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
 
         if (other.tag == "Player")
         {
-            Debug.Log("Trigger!");
+            //Debug.Log("Trigger!");
 
             if (currentObjectivePosition == 0)
             {

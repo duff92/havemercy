@@ -24,6 +24,13 @@ public class OverlapSphereScript : MonoBehaviour
         wallist.Add(this.gameObject);
         while (i < colliders.Length)
         {
+            //destroy cube if its adjacent to objective or player
+            if (colliders[i].gameObject.tag == "objective" || colliders[i].gameObject.tag == "Player")
+            {
+                wallist.Remove(this.gameObject);
+                PhotonNetwork.Destroy(gameObject);
+                return;
+            }
             if (colliders[i].gameObject.tag == "Wall")
             {
                 wallist.Add(colliders[i].gameObject);
@@ -37,7 +44,7 @@ public class OverlapSphereScript : MonoBehaviour
                     //alternatively:
                     //Network.Destroy(GetComponent<NetworkView>().viewID);
                 }
-            }
+            }         
             i++;
         }
         //go through all the "first" neighbours of the wall and check for their wallneighbours

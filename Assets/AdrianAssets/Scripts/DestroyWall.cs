@@ -3,6 +3,8 @@ using System.Collections;
 
 public class DestroyWall : Photon.MonoBehaviour
 {
+    int deathtime = 5;
+
     void Start()
     {
         StartCoroutine(Example());
@@ -11,7 +13,7 @@ public class DestroyWall : Photon.MonoBehaviour
     IEnumerator Example()
     {
         print(Time.time);
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(deathtime);
         print(Time.time);
         if (photonView.isMine)
         {

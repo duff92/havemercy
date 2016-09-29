@@ -64,7 +64,7 @@ public class OnClickInstantiate : MonoBehaviour
         {
             case 0:
                 //touchbased input instead of clicks
-                /*if (Input.touchCount > 0)
+                if (Input.touchCount > 0)
                 {
                     ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
                     if (Physics.Raycast(ray, out hit))
@@ -100,7 +100,7 @@ public class OnClickInstantiate : MonoBehaviour
                             }
                         }
                     }
-                }*/
+                }
                 break;
             case 1:
                 PhotonNetwork.InstantiateSceneObject(Prefab.name, InputToEvent.inputHitPos + new Vector3(0, 5f, 0), Quaternion.identity, 0, null);
