@@ -35,10 +35,16 @@ public class VRMovement : MonoBehaviour
     void Update()
     {
         CharacterController controller = GetComponent<CharacterController>();
+        float yrot = transform.rotation.eulerAngles.y;
+
+        //get angle rotation around y axis
+        Quaternion var = Quaternion.AngleAxis(yrot, Vector3.up);
+        Vector3 forward = var * Vector3.forward;
         if (controller.isGrounded)
         {
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            moveDirection = transform.TransformDirection(moveDirection);
+            moveDirection = forward;
+            //move amount according to input
+            moveDirection *= Input.GetAxis("Vertical");
             moveDirection *= speed;
             if (Input.GetButton("Jump"))
                 moveDirection.y = jumpSpeed;
