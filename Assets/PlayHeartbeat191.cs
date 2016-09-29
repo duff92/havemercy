@@ -35,10 +35,10 @@ public class PlayHeartbeat191 : MonoBehaviour {
             {
                 if ((Mathf.Abs(playerPosX - w.transform.position.x) <= closeCall) && (Mathf.Abs(playerPosZ - w.transform.position.z) <= closeCall) && w.transform.position.y > 3.5f)
                 {
-                    Debug.Log("Active routine = " + activeRoutine);
+                    // Debug.Log("Active routine = " + activeRoutine);
                     activeRoutine = true;
                     heartPumping();
-                    Debug.Log("heartPumping() was called, activeRoutine = " + activeRoutine);
+                    // Debug.Log("heartPumping() was called, activeRoutine = " + activeRoutine);
                 }
             }
 
@@ -47,7 +47,7 @@ public class PlayHeartbeat191 : MonoBehaviour {
 
     void heartPumping()
     {
-        Debug.Log("Set to true? " + activeRoutine);
+        // Debug.Log("Set to true? " + activeRoutine);
         StartCoroutine(timeWait());
     }
 
