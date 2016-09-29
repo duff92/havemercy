@@ -11,7 +11,8 @@ public class DestroyWall : Photon.MonoBehaviour
     void Update () {
 	    if(lifetime == 0)
         {
-            PhotonNetwork.Destroy(gameObject);
+            if(photonView.isMine)
+                PhotonNetwork.Destroy(gameObject);
         }
         else
         {

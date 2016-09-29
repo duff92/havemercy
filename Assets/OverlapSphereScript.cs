@@ -31,6 +31,7 @@ public class OverlapSphereScript : MonoBehaviour
                 {
                     Debug.Log(wallist.Count);
                     PhotonNetwork.Destroy(gameObject);
+                    return;
                     //alternatively:
                     //Network.Destroy(GetComponent<NetworkView>().viewID);
                 }
@@ -68,6 +69,7 @@ public class OverlapSphereScript : MonoBehaviour
                 {
                     Debug.Log("recursion error");
                     PhotonNetwork.Destroy(gameObject);
+                    return;
                     //alternatively:
                     //Network.Destroy(GetComponent<NetworkView>().viewID);
                 }

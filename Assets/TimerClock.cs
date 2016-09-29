@@ -44,6 +44,7 @@ public class TimerClock : MonoBehaviour
             yield return new WaitForEndOfFrame();
             timeLeft -= Time.deltaTime;
         }
-        anim.SetTrigger("GameOver");
+        if(anim != null)
+            anim.SetTrigger("GameOver");
     }
 }
