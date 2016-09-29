@@ -20,9 +20,12 @@ public class NetworkPlayer : Photon.MonoBehaviour {
             myCamera.SetActive(true);
             if(this.tag == "Player")
             {
+                GvrViewer gvrViewer = this.GetComponent<GvrViewer>();
                 this.GetComponent<VRMovement>().enabled = true;
-                this.GetComponent<GvrViewer>().enabled = true;
                 this.GetComponent<GvrHead>().enabled = true;
+
+                gvrViewer.enabled = true;
+                gvrViewer.VRModeEnabled = true;
 
                 foreach (Camera cam in this.GetComponentsInChildren<Camera>())
                     cam.enabled = true;
