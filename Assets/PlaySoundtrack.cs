@@ -15,7 +15,7 @@ public class PlaySoundtrack : MonoBehaviour {
         soundtrack.reverbZoneMix = 0.65f;
         soundtrack.volume = 0.1f;
         soundtrack.panStereo = 0;
-        soundtrack.Play();
+        // soundtrack.Play();
     }
 
     // Update is called once per frame
