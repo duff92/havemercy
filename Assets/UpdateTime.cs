@@ -19,7 +19,7 @@ public class UpdateTime : MonoBehaviour
     void Update()
     {
 
-        if (anim.GetCurrentAnimatorStateInfo(0).IsTag("15"))
-            script.timeLeft = 120.0f;
+        if (anim.GetCurrentAnimatorStateInfo(0).IsTag("GameOver"))
+            script.timeLeft = 10.0f;
     }
 }
