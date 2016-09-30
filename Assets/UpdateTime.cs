@@ -20,6 +20,6 @@ public class UpdateTime : MonoBehaviour
     {
 
         if (anim.GetCurrentAnimatorStateInfo(0).IsTag("15"))
-            script.timeLeft = 120.0f;
+            script.timeLeft = 10.0f;
     }
 }
