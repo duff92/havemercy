@@ -44,7 +44,7 @@ public class VRMovement : MonoBehaviour
         {
             moveDirection = forward;
             //move amount according to input
-            moveDirection *= Input.GetAxis("Vertical");
+            moveDirection *= Input.GetAxis("Horizontal") * (-1);
             moveDirection *= speed;
             if (Input.GetButton("Jump"))
                 moveDirection.y = jumpSpeed;

@@ -5,7 +5,7 @@ public class UpdateTime : MonoBehaviour
 {
 
     Animator anim;
-
+    public float ResetTimer = 120.0f;
     TimerClock script;
 
     // Use this for initialization
@@ -18,8 +18,7 @@ public class UpdateTime : MonoBehaviour
 
     void Update()
     {
-
         if (anim.GetCurrentAnimatorStateInfo(0).IsTag("15"))
-            script.timeLeft = 120.0f;
+            script.timeLeft = ResetTimer;
     }
 }
