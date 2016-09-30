@@ -3,12 +3,12 @@ using System.Collections;
 
 public class PlayHeartbeat191 : MonoBehaviour {
 
-    public AudioSource heartbeat191;
+    public AudioSource[] heartbeat191;
     GameObject[] wall;
     float playerPosX;
     float playerPosZ;
     bool activeRoutine;
-    float closeCall = 2.5f;
+    float closeCall = 3.0f;
 
     // Use this for initialization
     void Start()
@@ -17,9 +17,9 @@ public class PlayHeartbeat191 : MonoBehaviour {
         playerPosX = this.transform.position.x;
         playerPosZ = this.transform.position.z;
 
-        heartbeat191 = GetComponent<AudioSource>();
-        heartbeat191.volume = 0.5f;
-        heartbeat191.loop = false;
+        heartbeat191 = GetComponents<AudioSource>();
+        heartbeat191[0].volume = 0.5f;
+        heartbeat191[0].loop = false;
     }
 
     // Update is called once per frame
@@ -53,10 +53,10 @@ public class PlayHeartbeat191 : MonoBehaviour {
 
     private IEnumerator timeWait()
     {
-        heartbeat191.Play();
+        heartbeat191[0].Play();
         // Debug.Log("Play() called");
         yield return new WaitForSeconds(5.0f);
-        heartbeat191.Stop();
+        heartbeat191[0].Stop();
         activeRoutine = false;
         // Debug.Log("Play() stopped");
     }
