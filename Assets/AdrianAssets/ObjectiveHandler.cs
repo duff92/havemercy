@@ -45,6 +45,7 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
         if (other.tag == "Player")
         {
             //Debug.Log("Trigger!");
+            HaveMercyLogic.numOfCollectedObjectives++;
 
             if (currentObjectivePosition == 0)
             {
