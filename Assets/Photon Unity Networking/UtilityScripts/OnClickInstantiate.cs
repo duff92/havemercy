@@ -67,6 +67,10 @@ public class OnClickInstantiate : MonoBehaviour
                 if (Input.touchCount > 0)
                 {
                     ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+
+                    if (ray.origin == null || ray.direction == null)
+                        return;
+
                     if (Physics.Raycast(ray, out hit))
                     {
                         Vector3 hitpos = hit.point;
@@ -86,9 +90,6 @@ public class OnClickInstantiate : MonoBehaviour
                 if (Input.GetMouseButton(0))
                 {
                     ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                    if (ray.direction == null ||ray.origin == null)
-                        return;
 
                     if (Physics.Raycast(ray, out hit))
                     {

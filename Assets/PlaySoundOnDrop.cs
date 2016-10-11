@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class PlaySoundOnDrop : MonoBehaviour {
 
-	public AudioSource walldrop;
+	public AudioSource[] walldrop;
 	float initYPos = 0;
 	System.DateTime timerInit;
 	System.DateTime timerCurrent;
@@ -14,20 +14,20 @@ public class PlaySoundOnDrop : MonoBehaviour {
 		initYPos = transform.position.y;
 		timerInit = System.DateTime.Now;
 
-		walldrop = GetComponent<AudioSource> ();
-		walldrop.loop = false;
-		walldrop.volume = 0.15f;
-		walldrop.spatialBlend = 0.8f;
-		walldrop.dopplerLevel = 3.5f;
+		walldrop = GetComponents<AudioSource> ();
+		walldrop[0].loop = false;
+		walldrop[0].volume = 0.3f;
+		walldrop[0].spatialBlend = 0.8f;
+		walldrop[0].dopplerLevel = 3.5f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		// Debug.Log ("Y: " + transform.position.y);
+		//Debug.Log ("Y: " + transform.position.y);
 		if (transform.position.y <= 3.0326f) {
-			walldrop.Play();
+			walldrop[0].Play();
 			timerCurrent = System.DateTime.Now;
-			// Debug.Log (timerCurrent - timerInit);
+			//Debug.Log (timerCurrent - timerInit);
 		}
 	}
 }

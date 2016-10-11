@@ -9,11 +9,11 @@ public class PlaySoundtrack : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         soundtrack = GetComponent<AudioSource>();
-        soundtrack.loop = false;
+        soundtrack.loop = true;
         soundtrack.spatialize = true;
-        soundtrack.spatialBlend = 0.7f;
+        soundtrack.spatialBlend = 0.6f;
         soundtrack.reverbZoneMix = 0.65f;
-        soundtrack.volume = 0.1f;
+        soundtrack.volume = 0.6f;
         soundtrack.panStereo = 0;
         // soundtrack.Play();
     }
