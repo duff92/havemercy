@@ -19,8 +19,6 @@ public class NetworkManager : Photon.MonoBehaviour
     public bool VRMode;
 
     public GameObject HUDCanvas;
-    public GameObject startButton;
-    public GameObject restartButton;
     public Camera sceneCamera;
 
     private string vrPrefabName = "VR Player";
@@ -28,7 +26,6 @@ public class NetworkManager : Photon.MonoBehaviour
     private string objPrefabName = "Objective";
 
     private bool ConnectInUpdate = true;
-    private int state = 0;
     
     public virtual void Start()
     {
@@ -66,41 +63,24 @@ public class NetworkManager : Photon.MonoBehaviour
         Debug.LogError("Cause: " + cause);
     }
 
+    //Spawn either a VR player or a BV player
+    //Show HUD only to BV player
     public void OnJoinedRoom()
     {
-        sceneCamera.enabled = true;
         if (VRMode)
         {
             PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
-            startButton.SetActive(false);
-            restartButton.SetActive(false);
         } else
         {
             PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);
+            HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
         }
         sceneCamera.enabled = false;
-        HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
     }
 
+    //Create one objective when room is created
     void OnCreatedRoom()
     {
         PhotonNetwork.InstantiateSceneObject(objPrefabName, objSpawnpoint.position, objSpawnpoint.rotation, 0, null);
-    }
-
-    public void OnStartButtonClick()
-    {
-        if(state == 0)
-        { 
-            this.GetComponent<PhotonView>().RPC("StartGameAnimation", PhotonTargets.All);
-        } else
-        {
-            HUDCanvas.GetComponent<Animator>().SetTrigger("StartGame");
-        }
-    }
-
-    [PunRPC]
-    public void StartGameAnimation()
-    {
-        this.HUDCanvas.GetComponent<Animator>().SetTrigger("StartGame");
     }
 }
