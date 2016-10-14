@@ -13,9 +13,9 @@ public class PlaySoundtrack : MonoBehaviour {
         soundtrack.spatialize = true;
         soundtrack.spatialBlend = 0.6f;
         soundtrack.reverbZoneMix = 0.65f;
-        soundtrack.volume = 0.6f;
+        soundtrack.volume = 0.8f;
         soundtrack.panStereo = 0;
-        // soundtrack.Play();
+        soundtrack.Play();
     }
 
     // Update is called once per frame

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class ObjectiveHandler : Photon.MonoBehaviour {
 
     private int currentPositionIndex;
@@ -16,6 +17,8 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
 
     private double time = 0.0f;
 
+	public AudioSource itemSound;
+
     // Use this for initialization
     void Start () {
         positionlist[0] = startPosition;
@@ -27,6 +30,14 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
 
         currentPositionIndex = 0;
         nextPosition = positionlist[0];
+
+		//---------------------------
+
+		itemSound = GetComponent<AudioSource>();
+		itemSound.loop = false;
+		itemSound.volume = 0.5f;
+		itemSound.spatialize = true;
+		itemSound.spatialBlend = 0.6f;
     }
 
     void Update()
@@ -70,6 +81,8 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
             }
 
             nextPosition = positionlist[currentPositionIndex];
+
+			itemSound.Play();
         }
     }
 

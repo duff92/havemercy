@@ -12,10 +12,8 @@ public class PlaySoundtrackVR : MonoBehaviour
     {
         soundtrack = GetComponents<AudioSource>();
         soundtrack[1].loop = true;
-        soundtrack[1].spatialize = true;
-        soundtrack[1].spatialBlend = 0.6f;
-        soundtrack[1].reverbZoneMix = 0.65f;
-        soundtrack[1].volume = 0.1f;
+        soundtrack[1].spatialize = false;
+        soundtrack[1].volume = 0.6f;
         soundtrack[1].panStereo = 0;
         soundtrack[1].Play();
     }
