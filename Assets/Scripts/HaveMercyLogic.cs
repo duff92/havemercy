@@ -39,4 +39,10 @@ public class HaveMercyLogic : MonoBehaviour {
         timerClock.StopAllCoroutines();
         animator.SetTrigger("GameOver");
     }
+
+	// get the status of the game is start or not for VR UI
+	public bool isGameStart()
+	{
+		return gameIsRunning;
+	}
 }

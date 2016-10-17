@@ -79,6 +79,12 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
         nextPosition = positionlist[0];
     }
 
+	// get the current position index for VR UI display
+	public int getCurrentObjectIndex()
+	{
+		return currentPositionIndex;
+	}
+
     [PunRPC]
     void UpdateObjectivePosition()
     {
