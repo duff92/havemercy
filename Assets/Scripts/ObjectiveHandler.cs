@@ -85,6 +85,11 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
 		return currentPositionIndex;
 	}
 
+    public int getNumberOfObjectives()
+    {
+        return positionlist.Length - 1;
+    }
+
     [PunRPC]
     void UpdateObjectivePosition()
     {

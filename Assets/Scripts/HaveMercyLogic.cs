@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class HaveMercyLogic : MonoBehaviour {
 
     public float gameTime;
 
-    private bool gameIsRunning = false;
+    private bool gameIsRunning;
     public int collectedObjectives;
     public TimerClock timerClock;
     private Animator animator;
@@ -14,30 +15,31 @@ public class HaveMercyLogic : MonoBehaviour {
     public void Start ()
     {
         collectedObjectives = 0;
+        gameIsRunning = false;
         timerClock = GetComponent<NetworkManager>().HUDCanvas.GetComponentInChildren<TimerClock>();
         animator = GetComponent<NetworkManager>().HUDCanvas.GetComponent<Animator>();
     }
 
     public void Update()
     {
-        if (gameIsRunning && timerClock.gameTime <= 0) { 
+        if (gameIsRunning && timerClock.gameTime <= 0)
             endGame();
-            gameIsRunning = false;
-        }
     }
 
     public void startGame()
     {
+        gameIsRunning = true;
         animator.SetTrigger("StartGame");
         timerClock.startTimerClock(gameTime);
-        gameIsRunning = true;
     }
 
     public void endGame()
     {
+        gameIsRunning = false;
         collectedObjectives = 0;
         timerClock.StopAllCoroutines();
         animator.SetTrigger("GameOver");
+        updateGameOverText();
     }
 
 	// get the status of the game is start or not for VR UI
@@ -45,4 +47,20 @@ public class HaveMercyLogic : MonoBehaviour {
 	{
 		return gameIsRunning;
 	}
+
+    public void updateGameOverText()
+    {
+        string winText = "You Win!";
+        string looseText = "You Loose!";
+
+        if(timerClock.gameTime <= 0)
+        {
+            GameObject.Find("HMFPSCanvas").GetComponent<Text>().text = looseText;
+            GameObject.FindGameObjectWithTag("Game Over Text").GetComponent<Text>().text = winText;
+        } else
+        {
+            GameObject.Find("HMFPSCanvas").GetComponent<Text>().text = winText;
+            GameObject.FindGameObjectWithTag("Game Over Text").GetComponent<Text>().text = looseText;
+        }
+    }
 }

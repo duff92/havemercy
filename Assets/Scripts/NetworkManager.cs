@@ -19,6 +19,7 @@ public class NetworkManager : Photon.MonoBehaviour
     public bool VRMode;
 
     public GameObject HUDCanvas;
+    public GameObject HMFPSCanvas;
     public Camera sceneCamera;
 
     private string vrPrefabName = "VR Player";
@@ -70,6 +71,7 @@ public class NetworkManager : Photon.MonoBehaviour
         if (VRMode)
         {
             PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
+            HMFPSCanvas.SetActive(true);
         } else
         {
             PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);

@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class HMFPSCanvas : MonoBehaviour {
 
-	private const string DISPLAY_TEXT_FORMAT = "Now go and catch more!\n {0} Time Remaining\n {1} Catched Objectives";
-	private Text textField;
+	private const string DISPLAY_TEXT_FORMAT = "Time remaining: {0}\n Objectives caught: {1}/{2}";
+	public Text textField;
 	private int numOfObjectives;
 	private float timer;
 	private string Timer;
@@ -39,7 +39,7 @@ public class HMFPSCanvas : MonoBehaviour {
 
 			// get the current objective index calculate the catched number
 			ObjectiveHandler Objective = GameObject.FindGameObjectWithTag("objective").GetComponent<ObjectiveHandler>();
-			numOfObjectives = 6 - Objective.getCurrentObjectIndex ();
+			numOfObjectives = 5 - Objective.getCurrentObjectIndex ();
 
 			// get the time sync
 			TimerClock TimerClock = GameObject.FindGameObjectWithTag("Timer").GetComponent<TimerClock>();
@@ -48,7 +48,7 @@ public class HMFPSCanvas : MonoBehaviour {
 
 			// display the text with the right format
 			textField.text = string.Format(DISPLAY_TEXT_FORMAT,
-				Timer,numOfObjectives);
+				Timer, numOfObjectives, Objective.getNumberOfObjectives());
 		}
 	}
 }
