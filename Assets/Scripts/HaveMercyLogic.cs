@@ -55,12 +55,12 @@ public class HaveMercyLogic : MonoBehaviour {
 
         if(timerClock.gameTime <= 0)
         {
-            GameObject.Find("HMFPSCanvas").GetComponent<Text>().text = looseText;
-            GameObject.FindGameObjectWithTag("Game Over Text").GetComponent<Text>().text = winText;
+            GetComponent<NetworkManager>().HMFPSCanvas.GetComponent<Text>().text = looseText;
+            GetComponent<NetworkManager>().HUDCanvas.GetComponentInChildren<Text>(true).text = winText;
         } else
         {
-            GameObject.Find("HMFPSCanvas").GetComponent<Text>().text = winText;
-            GameObject.FindGameObjectWithTag("Game Over Text").GetComponent<Text>().text = looseText;
+            GetComponent<NetworkManager>().HMFPSCanvas.GetComponent<Text>().text = winText;
+            GetComponent<NetworkManager>().HUDCanvas.GetComponentInChildren<Text>(true).text = looseText;
         }
     }
 }
