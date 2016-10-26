@@ -74,7 +74,7 @@ public class NetworkManager : Photon.MonoBehaviour
             HMFPSCanvas.SetActive(true);
             GameObject.Find("FakeObjectiveButton").SetActive(false);
             GameObject.Find("FakeObjectiveBackground").SetActive(false);
-            GameObject.Find("ShakeObjectiveButton").SetActive(false);
+            GameObject.Find("ShakeButton").SetActive(false);
             GameObject.Find("ShakeBackground").SetActive(false);
         } else
         {
