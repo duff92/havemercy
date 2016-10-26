@@ -12,9 +12,9 @@ public class DestroyWall : Photon.MonoBehaviour
 
     IEnumerator Example()
     {
-        print(Time.time);
+        //print(Time.time);
         yield return new WaitForSeconds(deathtime);
-        print(Time.time);
+        //print(Time.time);
         if (photonView.isMine)
         {
             PhotonNetwork.Destroy(this.gameObject);

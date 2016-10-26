@@ -47,13 +47,13 @@ public class NetworkManager : Photon.MonoBehaviour
     public virtual void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
-        PhotonNetwork.JoinOrCreateRoom("Sven3", new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom("Sven4", new RoomOptions() { MaxPlayers = 4 }, null);
     }
 
     public virtual void OnJoinedLobby()
     {
         Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
-        PhotonNetwork.JoinOrCreateRoom("Sven3", new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom("Sven4", new RoomOptions() { MaxPlayers = 4 }, null);
         
     }
 
@@ -72,6 +72,8 @@ public class NetworkManager : Photon.MonoBehaviour
         {
             PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
             HMFPSCanvas.SetActive(true);
+            GameObject.Find("FakeObjectiveButton").SetActive(false);
+            GameObject.Find("BehindButton").SetActive(false);
         } else
         {
             PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);
