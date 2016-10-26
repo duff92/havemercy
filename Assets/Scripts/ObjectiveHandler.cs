@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class ObjectiveHandler : Photon.MonoBehaviour {
+
+    public AudioSource itemSound; 
 
     private int currentPositionIndex;
     private Vector3 nextPosition;
@@ -24,6 +27,12 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
         positionlist[3] = position3;
         positionlist[4] = position4;
         positionlist[5] = position5;
+
+        itemSound = GetComponent<AudioSource>();
+        itemSound.loop = false;
+        itemSound.volume = 0.5f;
+        itemSound.spatialize = true;
+        itemSound.spatialBlend = 0.6f;
 
         currentPositionIndex = 0;
         nextPosition = positionlist[0];
@@ -70,6 +79,8 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
             }
 
             nextPosition = positionlist[currentPositionIndex];
+
+            itemSound.Play();
         }
     }
 
