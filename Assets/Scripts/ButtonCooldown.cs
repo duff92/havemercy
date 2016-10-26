@@ -6,7 +6,7 @@ public class ButtonCooldown : MonoBehaviour {
 
     public Image cooldown;
     public bool coolingDown;
-    public float waitTime = 30.0f;
+    public float waitTime = 10.0f;
 
     // Update is called once per frame
     void Update()
@@ -14,7 +14,17 @@ public class ButtonCooldown : MonoBehaviour {
         if (coolingDown == true)
         {
             //Reduce fill amount over 30 seconds
-            cooldown.fillAmount -= 1.0f / waitTime * Time.deltaTime;
+            cooldown.fillAmount += 1.0f / waitTime * Time.deltaTime;
+            if (cooldown.fillAmount == 1)
+            {
+                coolingDown = false;
+            }
         }
+    }
+
+    public void resetCooldown()
+    {
+        cooldown.fillAmount = 0;
+        coolingDown = true;
     }
 }

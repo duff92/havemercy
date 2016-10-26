@@ -140,7 +140,7 @@ public class OnClickInstantiate : MonoBehaviour
     public void changeToPowerup()
     {
         // set drawWalls so you drop powerups instead of creating walls
-        drawWalls = false;
+        drawWalls = false;    
     }
 
     // instanciate all wallpieces on top of the hexagonal tiles by calculating which tile index in x- and z-axis it should be placed at
