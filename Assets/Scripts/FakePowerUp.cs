@@ -7,7 +7,7 @@ public class FakePowerUp : Photon.MonoBehaviour {
     public float slowtime = 3.0f;
     private double initiateSlowTime;
     private bool changedSpeed = false;
-    public float slowMultiple = 3.0f;
+    public float slowValue = 2.0f;
     // Use this for initialization
 
 	void Start () {
@@ -21,7 +21,7 @@ public class FakePowerUp : Photon.MonoBehaviour {
             if (Network.time - initiateSlowTime > slowtime)
             {
                 player = GameObject.FindGameObjectWithTag("Player");
-                player.GetComponent<VRMovement>().speed = player.GetComponent<VRMovement>().speed * slowMultiple;
+                player.GetComponent<VRMovement>().speed = 6.0f;
                 PhotonNetwork.Destroy(this.gameObject);
             }
         }
@@ -32,7 +32,7 @@ public class FakePowerUp : Photon.MonoBehaviour {
         if (other.tag == "Player")
         {
             player = GameObject.FindGameObjectWithTag("Player");
-            player.GetComponent<VRMovement>().speed = player.GetComponent<VRMovement>().speed = player.GetComponent<VRMovement>().speed / slowMultiple;
+            player.GetComponent<VRMovement>().speed = player.GetComponent<VRMovement>().speed = slowValue;
             //slow for a short period of time, start countdown in update() with this code
             changedSpeed = true;
             initiateSlowTime = Network.time;
