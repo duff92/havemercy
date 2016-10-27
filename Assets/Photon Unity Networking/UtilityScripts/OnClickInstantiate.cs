@@ -91,6 +91,7 @@ public class OnClickInstantiate : MonoBehaviour
         }
         if (Input.GetMouseButton(0) && drawWalls)
         {
+            //ger error om man spelar som vr och försöker skapa väggar
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))

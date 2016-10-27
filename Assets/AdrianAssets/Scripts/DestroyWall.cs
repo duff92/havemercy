@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DestroyWall : Photon.MonoBehaviour
 {
-    int deathtime = 5;
+    public int deathtime = 5;
 
     void Start()
     {

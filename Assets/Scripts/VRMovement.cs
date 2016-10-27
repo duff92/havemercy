@@ -32,6 +32,8 @@ public class VRMovement : MonoBehaviour
     public float gravity = 20.0F;
     private Vector3 moveDirection = Vector3.zero;
 
+    public float slowtime = 4.0f;
+
     void Update()
     {
         CharacterController controller = GetComponent<CharacterController>();
