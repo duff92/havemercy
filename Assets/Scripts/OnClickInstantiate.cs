@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.EventSystems;
 
 public class OnClickInstantiate : MonoBehaviour
 {
     public GameObject Prefab;
+    public GameObject fakePrefab;
 
     public int InstantiateType;
     private string[] InstantiateTypeNames = { "Mine", "Scene" };
@@ -18,11 +20,13 @@ public class OnClickInstantiate : MonoBehaviour
     Camera cam;
     public bool showGui;
 
+    private bool drawWalls = true;
+
     void Start()
     {
     }
 
-    void OnClick()
+    /*void OnClick()
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
@@ -48,7 +52,7 @@ public class OnClickInstantiate : MonoBehaviour
                 PhotonNetwork.InstantiateSceneObject(Prefab.name, InputToEvent.inputHitPos + new Vector3(0, 5f, 0), Quaternion.identity, 0, null);
                 break;
         }
-    }
+    }*/
 
     void Update()
     {
@@ -60,56 +64,76 @@ public class OnClickInstantiate : MonoBehaviour
             // only use PhotonNetwork.Instantiate while in a room.
             return;
         }
-        switch (InstantiateType)
+
+        //touchbased input instead of clicks
+        if (Input.touchCount > 0 && drawWalls)
         {
-            case 0:
-                //touchbased input instead of clicks
-                if (Input.touchCount > 0)
+            ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+
+            if (ray.origin == null || ray.direction == null)
+                return;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 hitpos = hit.point;
+                Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
+
+                Vector3 dir = wallposition - Camera.main.transform.position;
+                if (Physics.Raycast(Camera.main.transform.position, dir, out hit, 1000))
                 {
-                    ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-
-                    if (ray.origin == null || ray.direction == null)
-                        return;
-
-                    if (Physics.Raycast(ray, out hit))
+                    if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective" || hit.transform.gameObject.tag == "fakeobjective"))
                     {
-                        Vector3 hitpos = hit.point;
-                        Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
-
-                        if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective"))
+                        //instanciate walls aslong as there are fewer than 10 walls in the scene
+                        GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
+                        if (gol.Length < wall_amount)
                         {
-                            //instanciate walls aslong as there are fewer than 10 walls in the scene
-                            GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
-                            if (gol.Length < wall_amount)
-                            {
-                                PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
-                            }
+                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
                         }
                     }
                 }
-                if (Input.GetMouseButton(0))
-                {
-                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                
+            }
+        }
+        if (Input.GetMouseButton(0) && drawWalls)
+        {
+            //ger error om man spelar som vr och försöker skapa väggar
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                    if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 hitpos = hit.point;
+                Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
+                if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective" || hit.transform.gameObject.tag == "fakeobjective"))
+                {
+                    //instanciate walls aslong as there are fewer than 10 walls in the scene
+                    GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
+                    if (gol.Length < wall_amount)
                     {
-                        Vector3 hitpos = hit.point;
-                        Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
-                        if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective"))
-                        {
-                            //instanciate walls aslong as there are fewer than 10 walls in the scene
-                            GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
-                            if (gol.Length < wall_amount)
-                            {
-                                PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
-                            }
-                        }
+                        PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
                     }
                 }
-                break;
-            case 1:
-                PhotonNetwork.InstantiateSceneObject(Prefab.name, InputToEvent.inputHitPos + new Vector3(0, 5f, 0), Quaternion.identity, 0, null);
-                break;
+            }
+        }
+        if (!drawWalls)
+        {
+            if (Input.touchCount > 0)
+            {
+                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (ray.origin == null || ray.direction == null)
+                    return;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Vector3 hitpos = hit.point;
+                    Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
+                    if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective" || hit.transform.gameObject.tag == "fakeobjective"))
+                    {
+                        PhotonNetwork.Instantiate(fakePrefab.name, wallposition + new Vector3(0, 1.5f, 0), Quaternion.identity, 0);
+                        drawWalls = true;
+                    }
+                }
+            }
         }
     }
 
@@ -121,6 +145,12 @@ public class OnClickInstantiate : MonoBehaviour
             InstantiateType = GUILayout.Toolbar(InstantiateType, InstantiateTypeNames);
             GUILayout.EndArea();
         }
+    }
+
+    public void changeToPowerup()
+    {
+        // set drawWalls so you drop powerups instead of creating walls
+        drawWalls = false;    
     }
 
     // instanciate all wallpieces on top of the hexagonal tiles by calculating which tile index in x- and z-axis it should be placed at
