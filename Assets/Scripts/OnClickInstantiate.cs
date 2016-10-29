@@ -103,13 +103,18 @@ public class OnClickInstantiate : MonoBehaviour
             {
                 Vector3 hitpos = hit.point;
                 Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
-                if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective" || hit.transform.gameObject.tag == "fakeobjective"))
+
+                Vector3 dir = wallposition - Camera.main.transform.position;
+                if (Physics.Raycast(Camera.main.transform.position, dir, out hit, 1000))
                 {
-                    //instanciate walls aslong as there are fewer than 10 walls in the scene
-                    GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
-                    if (gol.Length < wall_amount)
+                    if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective" || hit.transform.gameObject.tag == "fakeobjective"))
                     {
-                        PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                        //instanciate walls aslong as there are fewer than 10 walls in the scene
+                        GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
+                        if (gol.Length < wall_amount)
+                        {
+                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                        }
                     }
                 }
             }
@@ -117,6 +122,24 @@ public class OnClickInstantiate : MonoBehaviour
         if (!drawWalls)
         {
             if (Input.touchCount > 0)
+            {
+                ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+
+                if (ray.origin == null || ray.direction == null)
+                    return;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Vector3 hitpos = hit.point;
+                    Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
+                    if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective" || hit.transform.gameObject.tag == "fakeobjective"))
+                    {
+                        PhotonNetwork.Instantiate(fakePrefab.name, wallposition + new Vector3(0, 1.5f, 0), Quaternion.identity, 0);
+                        drawWalls = true;
+                    }
+                }
+            }
+            if (Input.GetMouseButton(0))
             {
                 ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -134,6 +157,7 @@ public class OnClickInstantiate : MonoBehaviour
                     }
                 }
             }
+
         }
     }
 
