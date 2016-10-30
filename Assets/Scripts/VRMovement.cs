@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -54,5 +54,77 @@ public class VRMovement : MonoBehaviour
         }
         moveDirection.y -= gravity * Time.deltaTime;
         controller.Move(moveDirection * Time.deltaTime);
+    }
+}
+*/
+﻿using UnityEngine;
+using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
+using System.Collections.Generic;
+
+public class VRMovement : MonoBehaviour
+{
+
+    public float speed = 7.0F;
+    public float gravity = 20.0F;
+    private Vector3 moveDirection = Vector3.zero;
+
+    // add a lowpass filter to accelerometer so that it won't be too sensitive
+    protected Queue<Vector3> filterDataQueue = new Queue<Vector3>();
+    public int filterLength = 4; //you could change it in inspector
+
+    void Start()
+    {
+        for (int i = 0; i < filterLength; i++)
+            filterDataQueue.Enqueue(Input.acceleration); //filling the queue to requered length
+    }
+
+    public Vector3 LowPassAccelerometer()
+    {
+        if (filterLength <= 0)
+            return Input.acceleration;
+        filterDataQueue.Enqueue(Input.acceleration);
+        filterDataQueue.Dequeue();
+
+        Vector3 vFiltered = Vector3.zero;
+        foreach (Vector3 v in filterDataQueue)
+            vFiltered += v;
+        vFiltered /= filterLength;
+        return vFiltered;
+    }
+
+    // end of adding a lowpass filter, return a filtered accelerometer
+
+    void Update()
+    {
+        CharacterController controller = GetComponent<CharacterController>();
+        float yrot = transform.rotation.eulerAngles.y;
+
+        //get angle rotation around y axis
+        Quaternion var = Quaternion.AngleAxis(yrot, Vector3.up);
+        Vector3 forward = var * Vector3.forward;
+
+        Vector3 dir = LowPassAccelerometer(); // get the movement from the mobile
+
+        Debug.Log(dir);
+
+        float movementData = Mathf.Abs(dir.y);
+
+        if (movementData >= 1.0)
+        {
+
+            if (controller.isGrounded)
+            {
+                moveDirection = forward;
+
+                // move the player, and can only move forward
+                //moveDirection *= Input.GetAxis("Horizontal") * (-1);
+                moveDirection *= speed;
+            }
+
+            moveDirection.y -= gravity * Time.deltaTime;
+            controller.Move(moveDirection * Time.deltaTime);
+        }
+
     }
 }
