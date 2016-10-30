@@ -73,8 +73,20 @@ public class VRMovement : MonoBehaviour
     protected Queue<Vector3> filterDataQueue = new Queue<Vector3>();
     public int filterLength = 4; //you could change it in inspector
 
+    private float yrot;
+    private Quaternion var;
+    private Vector3 forward;
+    private Vector3 dir;
+    private float movementData;
+    private CharacterController controller;
+
+    private bool walking = false;
+    public float remaingwalkingtime;
+
     void Start()
     {
+        controller = GetComponent<CharacterController>();
+
         for (int i = 0; i < filterLength; i++)
             filterDataQueue.Enqueue(Input.acceleration); //filling the queue to requered length
     }
@@ -97,21 +109,22 @@ public class VRMovement : MonoBehaviour
 
     void Update()
     {
-        CharacterController controller = GetComponent<CharacterController>();
-        float yrot = transform.rotation.eulerAngles.y;
+        yrot = transform.rotation.eulerAngles.y;
 
         //get angle rotation around y axis
-        Quaternion var = Quaternion.AngleAxis(yrot, Vector3.up);
-        Vector3 forward = var * Vector3.forward;
+        var = Quaternion.AngleAxis(yrot, Vector3.up);
+        forward = var * Vector3.forward;
 
-        Vector3 dir = LowPassAccelerometer(); // get the movement from the mobile
+        dir = LowPassAccelerometer(); // get the movement from the mobile
 
         Debug.Log(dir);
 
-        float movementData = Mathf.Abs(dir.y);
+        movementData = Mathf.Abs(dir.y);
 
         if (movementData >= 1.0)
         {
+            walking = true;
+            remaingwalkingtime = Time.time;
 
             if (controller.isGrounded)
             {
@@ -119,12 +132,21 @@ public class VRMovement : MonoBehaviour
 
                 // move the player, and can only move forward
                 //moveDirection *= Input.GetAxis("Horizontal") * (-1);
-                moveDirection *= speed;
+                moveDirection *= speed * movementData;
             }
 
             moveDirection.y -= gravity * Time.deltaTime;
             controller.Move(moveDirection * Time.deltaTime);
         }
-
+        //walk a little bit after you have no accelration on phone, so that you don't stop when change direction of acceleration of your head
+        else if (walking && remaingwalkingtime > 0)
+        {
+            if (Time.time - remaingwalkingtime > 0.25)
+            {
+                walking = false; 
+            }
+            moveDirection.y -= gravity * Time.deltaTime;
+            controller.Move(moveDirection * Time.deltaTime);
+        }
     }
 }
