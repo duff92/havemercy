@@ -17,6 +17,7 @@ public class NetworkManager : Photon.MonoBehaviour
     public Transform bvSpawnpoint;
     public Transform objSpawnpoint;
     public bool VRMode;
+    public bool spectatorView = false;
 
     public GameObject HUDCanvas;
     public GameObject HMFPSCanvas;
@@ -24,7 +25,9 @@ public class NetworkManager : Photon.MonoBehaviour
     public GameObject FakeObjectiveBackground;
     public GameObject ShakeButton;
     public GameObject ShakeBackground;
+    private GameObject vrPlayer;
     public Camera sceneCamera;
+    public Camera audienceCamera;
 
     private string vrPrefabName = "VR Player";
     private string bvPrefabName = "BV Player";
@@ -71,23 +74,30 @@ public class NetworkManager : Photon.MonoBehaviour
     //Show HUD only to BV player
     public void OnJoinedRoom()
     {
-        if (VRMode)
+        if (!spectatorView)
         {
-            PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
-            HMFPSCanvas.SetActive(true);
-        } else
-        {
-            PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);
-            HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
+            if (VRMode)
+            {
+                vrPlayer = PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0).gameObject;
+                HMFPSCanvas.SetActive(true);
+            }
+            else
+            {
+                PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);
+                HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
 
-            FakeObjectiveButton.SetActive(true);
-            FakeObjectiveBackground.SetActive(true);
-            //ShakeButton.SetActive(true);
-            //ShakeBackground.SetActive(true);
+                FakeObjectiveButton.SetActive(true);
+                FakeObjectiveBackground.SetActive(true);
+                //ShakeButton.SetActive(true);
+                //ShakeBackground.SetActive(true);
+            }
+        }
+        else
+        {
+            audienceCamera.enabled = true;
         }
         sceneCamera.enabled = false;
     }
-
     //Create one objective when room is created
     void OnCreatedRoom()
     {
