@@ -8,7 +8,9 @@ public class FakePowerUp : Photon.MonoBehaviour {
     private double initiateSlowTime;
     private bool changedSpeed = false;
     public float slowValue = 2.0f;
+    private bool stopRPC = false;
 	
+
 	// Update is called once per frame
 	void Update () {
         if (changedSpeed)
@@ -17,8 +19,12 @@ public class FakePowerUp : Photon.MonoBehaviour {
             {
                 player = GameObject.FindGameObjectWithTag("Player");
                 player.GetComponent<VRMovement>().speed = 6.0f;
-                photonView.RPC("RemoveFakeObjective", PhotonTargets.MasterClient);
-            }
+                if (!stopRPC)
+                {
+                    stopRPC = true;
+                    photonView.RPC("RemoveFakeObjective", PhotonTargets.MasterClient);
+                }
+             }
         }
 	}
 
@@ -40,6 +46,6 @@ public class FakePowerUp : Photon.MonoBehaviour {
     [PunRPC]
     void RemoveFakeObjective()
     {
-        PhotonNetwork.Destroy(GameObject.Find("fakeObjective"));
+        PhotonNetwork.Destroy(gameObject);
     }
 }

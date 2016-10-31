@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OverlapSphereScript : MonoBehaviour
+public class OverlapSphereScript : Photon.MonoBehaviour
 {
 
     //might need Photon.MonoBehaviour
@@ -28,7 +28,9 @@ public class OverlapSphereScript : MonoBehaviour
             if (colliders[i].gameObject.tag == "objective" || colliders[i].gameObject.tag == "Player")
             {
                 wallist.Remove(this.gameObject);
-                PhotonNetwork.Destroy(gameObject);
+                Debug.Log("Remove vall overlap sphere script");
+                //PhotonNetwork.Destroy(gameObject);
+                photonView.RPC("RemoveWall", PhotonTargets.MasterClient);
                 return;
             }
             if (colliders[i].gameObject.tag == "Wall")
@@ -39,7 +41,9 @@ public class OverlapSphereScript : MonoBehaviour
                 if (wallist.Count > (wallrowcap + 1))
                 {
                     wallist.Remove(this.gameObject);
-                    PhotonNetwork.Destroy(gameObject);
+                    Debug.Log("Remove vall overlap sphere script");
+                    //PhotonNetwork.Destroy(gameObject);
+                    photonView.RPC("RemoveWall", PhotonTargets.MasterClient);
                     return;
                     //alternatively:
                     //Network.Destroy(GetComponent<NetworkView>().viewID);
@@ -58,11 +62,6 @@ public class OverlapSphereScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(wallist == null)
-        {
-            Debug.LogError("Wallist null");
-        }
-        Debug.Log("Walllist length: " + wallist.Count);
     }
 
     void checkOtherWallNeighbours(GameObject go)
@@ -78,7 +77,9 @@ public class OverlapSphereScript : MonoBehaviour
                 if (wallist.Count > (wallrowcap + 1)) //remove wall (aka not spawn it) if there already is 4 walls in clumped together
                 {
                     wallist.Remove(gameObject);
-                    PhotonNetwork.Destroy(gameObject);
+                    //PhotonNetwork.Destroy(gameObject);
+                    Debug.Log("Remove vall overlap sphere script");
+                    photonView.RPC("RemoveWall", PhotonTargets.MasterClient);
                     return;
                     //alternatively:
                     //Network.Destroy(GetComponent<NetworkView>().viewID);

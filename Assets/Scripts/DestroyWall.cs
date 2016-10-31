@@ -4,18 +4,19 @@ using System.Collections;
 public class DestroyWall : Photon.MonoBehaviour
 {
     public float wallLifetime = 5.0f;
-    private double initiateWall;
+    private double initiateWall = 0.0f;
 
     public void Start()
     {
-        initiateWall = Network.time;
+        initiateWall = PhotonNetwork.time;
     }
 
     public void Update()
     {
-        if(Network.time - initiateWall > wallLifetime)
+        if(PhotonNetwork.time - initiateWall > wallLifetime)
         {
-            photonView.RPC("RemoveWall", PhotonTargets.MasterClient );
+            Debug.Log("Destroy wall");
+            photonView.RPC("RemoveWall", PhotonTargets.MasterClient);
         }
     }
 
@@ -23,7 +24,10 @@ public class DestroyWall : Photon.MonoBehaviour
     public void RemoveWall()
     {
         Debug.Log("PUNRPC REMOVE WALL");
-        if(PhotonNetwork.isMasterClient)
-            PhotonNetwork.Destroy(this.gameObject);
+        if (photonView.isMine)
+        {
+            Debug.Log("Photonview is mine and destroying wall");
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }
