@@ -26,7 +26,6 @@ public class ShakeCooldown : MonoBehaviour
 		shakeDetectionThreshold *= shakeDetectionThreshold;
 		lowPassValue = Input.acceleration;
 		isPhoneShaking = false;
-		Time.timeScale = 1.0f;
 	}
 
 	// Update is called once per frame

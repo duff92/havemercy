@@ -8,7 +8,6 @@ public class PlaySoundtrack : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Time.timeScale = 1.0f;
         soundtrack = GetComponent<AudioSource>();
         soundtrack.loop = true;
         soundtrack.spatialize = true;

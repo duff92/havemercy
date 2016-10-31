@@ -21,7 +21,6 @@ public class ObjectiveHandler : Photon.MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		Time.timeScale = 1.0f;
         positionlist[0] = startPosition;
         positionlist[1] = position1;
         positionlist[2] = position2;

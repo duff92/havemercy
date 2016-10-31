@@ -31,7 +31,6 @@ public class NetworkManager : Photon.MonoBehaviour
     public virtual void Start()
     {
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
-		Time.timeScale = 1.0f;
     }
 
     public virtual void Update()

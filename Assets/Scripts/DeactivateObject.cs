@@ -13,7 +13,6 @@ public class DeactivateObject : MonoBehaviour
 	void Start () {
 		hideObjective = GameObject.FindGameObjectWithTag("hideobjective");
 		// hideObjective = GameObject.FindWithTag("hideobjective");
-		Time.timeScale = 1.0f;
 	}
 
 	// Update is called once per frame

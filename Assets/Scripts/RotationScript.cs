@@ -5,14 +5,14 @@ public class RotationScript : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start ()
+	{
 
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
+	void Update ()
+	{
         transform.GetChild(0).RotateAround(transform.position, Vector3.left, 90 * Time.deltaTime);
         transform.GetChild(1).RotateAround(transform.position, Vector3.left, 90 * Time.deltaTime);
         transform.GetChild(2).RotateAround(transform.position, Vector3.left, 90 * Time.deltaTime);
