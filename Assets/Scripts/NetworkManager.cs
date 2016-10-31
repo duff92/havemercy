@@ -18,6 +18,7 @@ public class NetworkManager : Photon.MonoBehaviour
     public Transform bvSpawnpoint;
     public Transform objSpawnpoint;
     public bool VRMode;
+    public bool audienceView = false;
 
     public GameObject HUDCanvas;
     public GameObject HMFPSCanvas;
@@ -28,6 +29,7 @@ public class NetworkManager : Photon.MonoBehaviour
     public GameObject ShakeButton;
     public GameObject ShakeBackground;
     public Camera sceneCamera;
+    public Camera audienceCamera;
 
     private string vrPrefabName = "VR Player";
     private string bvPrefabName = "BV Player";
@@ -75,19 +77,27 @@ public class NetworkManager : Photon.MonoBehaviour
     //Show HUD only to BV player
     public void OnJoinedRoom()
     {
-        if (VRMode)
+        if (audienceView)
         {
-            PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
-            HMFPSCanvas.SetActive(true);
-        } else
+            audienceCamera.enabled = true;
+        }
+        else
         {
-            PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);
-            HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
+            if (VRMode)
+            {
+                PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
+                HMFPSCanvas.SetActive(true);
+            } else
+            {
+                PhotonNetwork.Instantiate(bvPrefabName, bvSpawnpoint.position, bvSpawnpoint.rotation, 0);
+                HUDCanvas.GetComponent<Animator>().SetTrigger("ShowStartMenu");
 
-            FakeObjectiveButton.SetActive(true);
-            FakeObjectiveBackground.SetActive(true);
-            //ShakeButton.SetActive(true);
-            //ShakeBackground.SetActive(true);
+                FakeObjectiveButton.SetActive(true);
+                FakeObjectiveBackground.SetActive(true);
+                //ShakeButton.SetActive(true);
+                //ShakeBackground.SetActive(true);
+                audienceCamera.enabled = false;
+            }
         }
         sceneCamera.enabled = false;
     }
