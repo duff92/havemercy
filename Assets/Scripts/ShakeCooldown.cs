@@ -7,7 +7,7 @@ public class ShakeCooldown : MonoBehaviour
 
 	public Image cooldown;
 	public bool coolingDown;
-	public float waitTime = 5.0f;
+	public float waitTime = 20.0f;
 
 	private float accelerometerUpdateInterval = 1.0f / 60.0f;
 	private float lowPassKernelWidthInSeconds = 1.0f;
@@ -18,11 +18,15 @@ public class ShakeCooldown : MonoBehaviour
 	private Vector3 acceleration;
 	private Vector3 deltaAcceleration;
 
+	public bool isPhoneShaking;
+
 	void Start()
 	{
 		lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
 		shakeDetectionThreshold *= shakeDetectionThreshold;
 		lowPassValue = Input.acceleration;
+		isPhoneShaking = false;
+		Time.timeScale = 1.0f;
 	}
 
 	// Update is called once per frame
@@ -30,11 +34,12 @@ public class ShakeCooldown : MonoBehaviour
 	{
 		if (coolingDown == true)
 		{
-			//Reduce fill amount over 30 seconds
+			//Reduce fill amount
 			cooldown.fillAmount += 1.0f / waitTime * Time.deltaTime;
 			if (cooldown.fillAmount == 1)
 			{
 				coolingDown = false;
+				isPhoneShaking = false;
 			}
 		}
 
@@ -43,11 +48,11 @@ public class ShakeCooldown : MonoBehaviour
 		deltaAcceleration = acceleration - lowPassValue;
 		if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold && coolingDown == false)
 		{
-			// Perform your "shaking actions" here, with suitable guards in the if check above, if necessary to not, to not fire again if they're already being performed.
-			// Debug.Log("Shake event detected at time "+Time.time);
+			// Debug.Log("Phone is shaking! - " + isPhoneShaking);
 			resetCooldown();
+			isPhoneShaking = true;
 		}
-
+			
 	}
 
 	public void resetCooldown()
@@ -55,4 +60,5 @@ public class ShakeCooldown : MonoBehaviour
 		cooldown.fillAmount = 0;
 		coolingDown = true;
 	}
+
 }

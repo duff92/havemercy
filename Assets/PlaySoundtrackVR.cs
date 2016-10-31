@@ -10,6 +10,7 @@ public class PlaySoundtrackVR : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		Time.timeScale = 1.0f;
         soundtrack = GetComponents<AudioSource>();
         soundtrack[1].loop = true;
         soundtrack[1].spatialize = false;

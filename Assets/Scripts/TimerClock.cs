@@ -14,6 +14,7 @@ public class TimerClock : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		Time.timeScale = 1.0f;
         clockText = GetComponent<Text>();
     }
 

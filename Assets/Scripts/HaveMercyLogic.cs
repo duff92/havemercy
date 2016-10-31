@@ -14,6 +14,7 @@ public class HaveMercyLogic : MonoBehaviour {
     // Use this for initialization
     public void Start ()
     {
+		Time.timeScale = 1.0f;
         collectedObjectives = 0;
         gameIsRunning = false;
         timerClock = GetComponent<NetworkManager>().HUDCanvas.GetComponentInChildren<TimerClock>();

@@ -27,12 +27,17 @@ public class VRMovement : MonoBehaviour
     //    transform.position = new Vector3(transform.position.x, 1.0f, transform.position.z);
     //    //transform.rotation = GvrController.Orientation;
     //}
-    public float speed = 6.0F;
+    public float speed = 1.5F;
     public float jumpSpeed = 8.0F;
     public float gravity = 20.0F;
     private Vector3 moveDirection = Vector3.zero;
 
     public float slowtime = 4.0f;
+
+	void Start()
+	{
+		Time.timeScale = 1.0f;
+	}
 
     void Update()
     {
@@ -42,16 +47,17 @@ public class VRMovement : MonoBehaviour
         //get angle rotation around y axis
         Quaternion var = Quaternion.AngleAxis(yrot, Vector3.up);
         Vector3 forward = var * Vector3.forward;
-        if (controller.isGrounded)
-        {
+        /*if (controller.isGrounded)
+        {*/
             moveDirection = forward;
             //move amount according to input
-            moveDirection *= Input.GetAxis("Horizontal") * (-1);
+            //moveDirection *= Input.GetAxis("Horizontal") * (-1);
+			moveDirection *= 1;
             moveDirection *= speed;
             if (Input.GetButton("Jump"))
                 moveDirection.y = jumpSpeed;
 
-        }
+        //}
         moveDirection.y -= gravity * Time.deltaTime;
         controller.Move(moveDirection * Time.deltaTime);
     }

@@ -8,6 +8,11 @@ public class ButtonCooldown : MonoBehaviour {
     public bool coolingDown;
     public float waitTime = 10.0f;
 
+	void Start()
+	{
+		Time.timeScale = 1.0f;
+	}
+
     // Update is called once per frame
     void Update()
     {

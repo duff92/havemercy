@@ -18,8 +18,9 @@ public class PlayHeartbeat191 : MonoBehaviour {
         playerPosZ = this.transform.position.z;
 
         heartbeat191 = GetComponents<AudioSource>();
-        heartbeat191[0].volume = 0.5f;
+        heartbeat191[0].volume = 1.0f;
         heartbeat191[0].loop = false;
+		Time.timeScale = 1.0f;
     }
 
     // Update is called once per frame

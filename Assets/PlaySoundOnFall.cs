@@ -9,6 +9,7 @@ public class PlaySoundOnFall : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Time.timeScale = 1.0f;
 		initYPos = transform.position.y;
 
 		wallfall = GetComponents<AudioSource>();
