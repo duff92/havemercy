@@ -10,7 +10,7 @@ public class OnClickInstantiate : MonoBehaviour
 
     public int InstantiateType;
     private string[] InstantiateTypeNames = { "Mine", "Scene" };
-    public int wall_amount = 20;
+    public int WallAmount;
 
     private float xstep = 1.732f;
     private float zstep = 1.5f;
@@ -85,7 +85,7 @@ public class OnClickInstantiate : MonoBehaviour
                     {
                         //instanciate walls aslong as there are fewer than 10 walls in the scene
                         GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
-                        if (gol.Length < wall_amount)
+                        if (gol.Length < WallAmount)
                         {
                             PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
                         }
@@ -111,7 +111,7 @@ public class OnClickInstantiate : MonoBehaviour
                     {
                         //instanciate walls aslong as there are fewer than 10 walls in the scene
                         GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
-                        if (gol.Length < wall_amount)
+                        if (gol.Length < WallAmount)
                         {
                             PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
                         }
@@ -152,7 +152,7 @@ public class OnClickInstantiate : MonoBehaviour
                     Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
                     if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective" || hit.transform.gameObject.tag == "fakeobjective"))
                     {
-                        PhotonNetwork.Instantiate(fakePrefab.name, wallposition + new Vector3(0, 1.5f, 0), Quaternion.identity, 0);
+                        PhotonNetwork.Instantiate(fakePrefab.name, wallposition + new Vector3(0, 1.0f, 0), Quaternion.identity, 0);
                         drawWalls = true;
                     }
                 }

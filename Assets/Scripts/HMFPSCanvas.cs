@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class HMFPSCanvas : MonoBehaviour {
 
-	private const string DISPLAY_TEXT_FORMAT = "{0}\n {1}/{2}";
+	private const string DISPLAY_TEXT_FORMAT = "Time: {0}\nObjectives: {1}/{2}";
 	public Text textField;
 	private int numOfObjectives;
 	private float timer;

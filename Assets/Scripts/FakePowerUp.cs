@@ -8,11 +8,6 @@ public class FakePowerUp : Photon.MonoBehaviour {
     private double initiateSlowTime;
     private bool changedSpeed = false;
     public float slowValue = 2.0f;
-    // Use this for initialization
-
-	void Start () {
-        
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -22,13 +17,14 @@ public class FakePowerUp : Photon.MonoBehaviour {
             {
                 player = GameObject.FindGameObjectWithTag("Player");
                 player.GetComponent<VRMovement>().speed = 6.0f;
-                PhotonNetwork.Destroy(this.gameObject);
+                photonView.RPC("RemoveFakeObjective", PhotonTargets.MasterClient);
             }
         }
 	}
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Trigger fake");
         if (other.tag == "Player")
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -39,5 +35,11 @@ public class FakePowerUp : Photon.MonoBehaviour {
             //so you can't collide with the fakeobjective after hitting it
             transform.GetComponent<SphereCollider>().enabled = false;
         }
+    }
+
+    [PunRPC]
+    void RemoveFakeObjective()
+    {
+        PhotonNetwork.Destroy(GameObject.Find("fakeObjective"));
     }
 }

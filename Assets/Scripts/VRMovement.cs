@@ -1,4 +1,4 @@
-﻿/*using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -56,7 +56,7 @@ public class VRMovement : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
     }
 }
-*/
+/*
 ﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
@@ -150,3 +150,4 @@ public class VRMovement : MonoBehaviour
         }
     }
 }
+*/

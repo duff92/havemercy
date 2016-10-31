@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.VR;
+using UnityEngine.UI;
 
 /// <summary>
 /// This script automatically connects to Photon (using the settings file),
@@ -20,6 +21,8 @@ public class NetworkManager : Photon.MonoBehaviour
 
     public GameObject HUDCanvas;
     public GameObject HMFPSCanvas;
+    public Text HUDText;
+    public Text HMFPSText;
     public GameObject FakeObjectiveButton;
     public GameObject FakeObjectiveBackground;
     public GameObject ShakeButton;
@@ -51,13 +54,13 @@ public class NetworkManager : Photon.MonoBehaviour
     public virtual void OnConnectedToMaster()
     {
         Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
-        PhotonNetwork.JoinOrCreateRoom("Robin1", new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom("Robin2", new RoomOptions() { MaxPlayers = 4 }, null);
     }
 
     public virtual void OnJoinedLobby()
     {
         Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
-        PhotonNetwork.JoinOrCreateRoom("Robin1", new RoomOptions() { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom("Robin2", new RoomOptions() { MaxPlayers = 4 }, null);
     }
 
     // the following methods are implemented to give you some context. re-implement them as needed.

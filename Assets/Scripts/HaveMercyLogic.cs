@@ -9,11 +9,13 @@ public class HaveMercyLogic : MonoBehaviour {
     private bool gameIsRunning;
     public int collectedObjectives;
     public TimerClock timerClock;
+    public int MaxWalls;
     private Animator animator;
 
     // Use this for initialization
     public void Start ()
     {
+        GameObject.Find("FloorCollider").GetComponent<OnClickInstantiate>().WallAmount = MaxWalls;
         collectedObjectives = 0;
         gameIsRunning = false;
         timerClock = GetComponent<NetworkManager>().HUDCanvas.GetComponentInChildren<TimerClock>();
@@ -50,17 +52,19 @@ public class HaveMercyLogic : MonoBehaviour {
 
     public void updateGameOverText()
     {
-        string winText = "You Win!";
-        string looseText = "You Loose!";
+        string VRWinText = "All objectives captured! Capture middle objective to restart game";
+        string VRLooseText = "Time's up! Capture middle objective to restart game";
+        string BVWinText = "Success!";
+        string BVLooseText = "Try Again!";
 
         if(timerClock.gameTime <= 0)
         {
-            GetComponent<NetworkManager>().HMFPSCanvas.GetComponent<Text>().text = looseText;
-            GetComponent<NetworkManager>().HUDCanvas.GetComponentInChildren<Text>(true).text = winText;
+            GetComponent<NetworkManager>().HMFPSText.text = VRLooseText;
+            GetComponent<NetworkManager>().HUDText.text = BVWinText;
         } else
         {
-            GetComponent<NetworkManager>().HMFPSCanvas.GetComponent<Text>().text = winText;
-            GetComponent<NetworkManager>().HUDCanvas.GetComponentInChildren<Text>(true).text = looseText;
+            GetComponent<NetworkManager>().HMFPSText.text = VRWinText;
+            GetComponent<NetworkManager>().HUDText.text = BVLooseText;
         }
     }
 }
