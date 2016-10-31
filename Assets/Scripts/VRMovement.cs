@@ -65,7 +65,7 @@ using System.Collections.Generic;
 public class VRMovement : MonoBehaviour
 {
 
-    public float speed = 7.0F;
+    public float speed = 6.0F;
     public float gravity = 20.0F;
     private Vector3 moveDirection = Vector3.zero;
 
@@ -121,7 +121,7 @@ public class VRMovement : MonoBehaviour
 
         movementData = Mathf.Abs(dir.y);
 
-        if (movementData >= 1.0)
+        if (movementData >= 1.1)
         {
             walking = true;
             remaingwalkingtime = Time.time;
@@ -149,5 +149,4 @@ public class VRMovement : MonoBehaviour
             controller.Move(moveDirection * Time.deltaTime);
         }
     }
-}
-*/
+}*/
