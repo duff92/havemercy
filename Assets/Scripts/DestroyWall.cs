@@ -3,35 +3,27 @@ using System.Collections;
 
 public class DestroyWall : Photon.MonoBehaviour
 {
-    public int deathtime = 5;
+    public float wallLifetime = 5.0f;
+    private double initiateWall;
 
-    void Start()
+    public void Start()
     {
-        StartCoroutine(Example());
+        initiateWall = Network.time;
     }
 
-    IEnumerator Example()
+    public void Update()
     {
-        //print(Time.time);
-        yield return new WaitForSeconds(deathtime);
-        //print(Time.time);
-        if (photonView.isMine)
+        if(Network.time - initiateWall > wallLifetime)
         {
+            photonView.RPC("RemoveWall", PhotonTargets.MasterClient );
+        }
+    }
+
+    [PunRPC]
+    public void RemoveWall()
+    {
+        Debug.Log("PUNRPC REMOVE WALL");
+        if(PhotonNetwork.isMasterClient)
             PhotonNetwork.Destroy(this.gameObject);
-        }
     }
-
-    // Update is called once per frame
-    /*void Update()
-    {
-        if (lifetime == 0)
-        {
-            if (photonView.isMine)
-                PhotonNetwork.Destroy(gameObject);
-        }
-        else
-        {
-            lifetime -= 1;
-        }
-    }*/
 }

@@ -28,7 +28,7 @@ public class OverlapSphereScript : MonoBehaviour
             if (colliders[i].gameObject.tag == "objective" || colliders[i].gameObject.tag == "Player")
             {
                 wallist.Remove(this.gameObject);
-                PhotonNetwork.Destroy(gameObject);
+                GetComponent<PhotonView>().RPC("RemoveWall", PhotonTargets.MasterClient);
                 return;
             }
             if (colliders[i].gameObject.tag == "Wall")
@@ -39,7 +39,7 @@ public class OverlapSphereScript : MonoBehaviour
                 if (wallist.Count > (wallrowcap + 1))
                 {
                     wallist.Remove(this.gameObject);
-                    PhotonNetwork.Destroy(gameObject);
+                    GetComponent<PhotonView>().RPC("RemoveWall", PhotonTargets.MasterClient);
                     return;
                     //alternatively:
                     //Network.Destroy(GetComponent<NetworkView>().viewID);
@@ -73,7 +73,7 @@ public class OverlapSphereScript : MonoBehaviour
                 if (wallist.Count > (wallrowcap + 1)) //remove wall (aka not spawn it) if there already is 4 walls in clumped together
                 {
                     wallist.Remove(gameObject);
-                    PhotonNetwork.Destroy(gameObject);
+                    GetComponent<PhotonView>().RPC("RemoveWall", PhotonTargets.MasterClient);
                     return;
                     //alternatively:
                     //Network.Destroy(GetComponent<NetworkView>().viewID);

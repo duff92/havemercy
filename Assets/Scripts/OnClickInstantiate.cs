@@ -87,7 +87,7 @@ public class OnClickInstantiate : MonoBehaviour
                         GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
                         if (gol.Length < WallAmount)
                         {
-                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 10f, 0), Quaternion.identity, 0);
                         }
                     }
                 }
@@ -113,7 +113,7 @@ public class OnClickInstantiate : MonoBehaviour
                         GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
                         if (gol.Length < WallAmount)
                         {
-                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
+                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 10f, 0), Quaternion.identity, 0);
                         }
                     }
                 }
@@ -134,7 +134,7 @@ public class OnClickInstantiate : MonoBehaviour
                     Vector3 wallposition = GetSpawnPosition(hitpos.x, hitpos.z);
                     if (!(hit.transform.gameObject.tag == "Wall" || hit.transform.gameObject.tag == "Player" || hit.transform.gameObject.tag == "objective" || hit.transform.gameObject.tag == "fakeobjective"))
                     {
-                        PhotonNetwork.Instantiate(fakePrefab.name, wallposition + new Vector3(0, 1.5f, 0), Quaternion.identity, 0);
+                        PhotonNetwork.Instantiate(fakePrefab.name, wallposition + new Vector3(0, 1.0f, 0), Quaternion.identity, 0);
                         drawWalls = true;
                     }
                 }
