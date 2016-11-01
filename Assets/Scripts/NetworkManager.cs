@@ -80,12 +80,20 @@ public class NetworkManager : Photon.MonoBehaviour
         if (audienceView)
         {
             audienceCamera.enabled = true;
+            GameObject.Find("FakeObjectiveButton").SetActive(false);
+            GameObject.Find("FakeObjectiveBackground").SetActive(false);
+            GameObject.Find("ShakeButton").SetActive(false);
+            GameObject.Find("ShakeBackground").SetActive(false);
         }
         else
         {
             if (VRMode)
             {
                 PhotonNetwork.Instantiate(vrPrefabName, vrSpawnpoint.position, vrSpawnpoint.rotation, 0);
+                GameObject.Find("FakeObjectiveButton").SetActive(false);
+                GameObject.Find("FakeObjectiveBackground").SetActive(false);
+                GameObject.Find("ShakeButton").SetActive(false);
+                GameObject.Find("ShakeBackground").SetActive(false);
                 HMFPSCanvas.SetActive(true);
             } else
             {

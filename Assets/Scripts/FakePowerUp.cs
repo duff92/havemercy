@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class FakePowerUp : Photon.MonoBehaviour {
 
     GameObject player;
@@ -9,7 +10,15 @@ public class FakePowerUp : Photon.MonoBehaviour {
     private bool changedSpeed = false;
     public float slowValue = 2.0f;
     private bool stopRPC = false;
-	
+
+    public AudioSource slowdownSound;
+
+    void Start()
+    {
+        slowdownSound = GetComponent<AudioSource>();
+        slowdownSound.volume = 0.6f;
+        slowdownSound.loop = false;
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -40,6 +49,8 @@ public class FakePowerUp : Photon.MonoBehaviour {
             initiateSlowTime = Network.time;
             //so you can't collide with the fakeobjective after hitting it
             transform.GetComponent<SphereCollider>().enabled = false;
+
+            slowdownSound.Play();
         }
     }
 
