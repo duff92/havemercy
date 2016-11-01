@@ -121,7 +121,7 @@ public class VRMovement : MonoBehaviour
 
         movementData = Mathf.Abs(dir.y);
 
-        if (movementData >= 1.1)
+        if (movementData >= 1.05)
         {
             walking = true;
             remaingwalkingtime = Time.time;

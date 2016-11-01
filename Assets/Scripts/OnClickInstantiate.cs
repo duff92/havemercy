@@ -22,37 +22,16 @@ public class OnClickInstantiate : MonoBehaviour
 
     private bool drawWalls = true;
 
+    //connecting sphere code
+    public float radius = 1.5f;
+    public Collider[] colliders;
+    int i;
+    public int wallrowcap = 4;
+    ArrayList wallist = new ArrayList();
+
     void Start()
     {
     }
-
-    /*void OnClick()
-    {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
-
-        if (!PhotonNetwork.inRoom)
-        {
-            // only use PhotonNetwork.Instantiate while in a room.
-            return;
-        }
-
-        switch (InstantiateType)
-        {
-            case 0:
-                Vector3 wallposition = GetSpawnPosition(InputToEvent.inputHitPos.x, InputToEvent.inputHitPos.z);
-                //instanciate walls aslong as there are fewer than 10 walls in the scene
-                GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
-                if (gol.Length < wall_amount)
-                {
-                    PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 15f, 0), Quaternion.identity, 0);
-                }
-                break;
-            case 1:
-                PhotonNetwork.InstantiateSceneObject(Prefab.name, InputToEvent.inputHitPos + new Vector3(0, 5f, 0), Quaternion.identity, 0, null);
-                break;
-        }
-    }*/
 
     void Update()
     {
@@ -87,11 +66,16 @@ public class OnClickInstantiate : MonoBehaviour
                         GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
                         if (gol.Length < WallAmount)
                         {
-                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 10f, 0), Quaternion.identity, 0);
+                            //check if there is too many walls connected to it
+                            Vector3 checkdroppoint = new Vector3(hit.point.x, 15.0f, hit.point.z);
+                            if (CheckIfDroppable(checkdroppoint))
+                            {
+                                PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 3.5f, 0), Quaternion.identity, 0);
+                            }
                         }
                     }
                 }
-                
+
             }
         }
         if (Input.GetMouseButton(0) && drawWalls)
@@ -113,7 +97,11 @@ public class OnClickInstantiate : MonoBehaviour
                         GameObject[] gol = GameObject.FindGameObjectsWithTag("Wall");
                         if (gol.Length < WallAmount)
                         {
-                            PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 10f, 0), Quaternion.identity, 0);
+                            Vector3 checkdroppoint = new Vector3(hit.point.x, 15.0f, hit.point.z);
+                            if (CheckIfDroppable(checkdroppoint))
+                            {
+                                PhotonNetwork.Instantiate(Prefab.name, wallposition + new Vector3(0, 3.5f, 0), Quaternion.identity, 0);
+                            }
                         }
                     }
                 }
@@ -174,7 +162,7 @@ public class OnClickInstantiate : MonoBehaviour
     public void changeToPowerup()
     {
         // set drawWalls so you drop powerups instead of creating walls
-        drawWalls = false;    
+        drawWalls = false;
     }
 
     // instanciate all wallpieces on top of the hexagonal tiles by calculating which tile index in x- and z-axis it should be placed at
@@ -249,6 +237,74 @@ public class OnClickInstantiate : MonoBehaviour
         }
 
         return spawnpos;
+    }
+
+    bool CheckIfDroppable(Vector3 pos)
+    {
+        wallist = new ArrayList();
+        ArrayList firstneighbours = new ArrayList();
+        colliders = Physics.OverlapCapsule(pos, new Vector3(pos.x, (pos.y - 15f), pos.z), 1.5f);
+        i = 0;
+        Debug.Log("Collider no: " + colliders.Length);
+        while (i < colliders.Length)
+        {
+            //destroy cube if its adjacent to objective or player
+            if (colliders[i].gameObject.tag == "objective" || colliders[i].gameObject.tag == "Player")
+            {
+                return false;
+            }
+            if (colliders[i].gameObject.tag == "Wall")
+            {
+                wallist.Add(colliders[i].gameObject);
+                firstneighbours.Add(colliders[i].gameObject);
+
+                if (wallist.Count > wallrowcap)
+                {
+                    return false;
+                    //alternatively:
+                    //Network.Destroy(GetComponent<NetworkView>().viewID);
+                }
+            }
+            i++;
+        }
+        //go through all the "first" neighbours of the wall and check for their wallneighbours
+        foreach (GameObject go in firstneighbours)
+        {
+            bool candrop = checkOtherWallNeighbours(go);
+            if (!candrop)
+            {
+                Debug.Log("return false");
+                return false;
+            }
+            Debug.Log("Wallist length: " + wallist.Count);
+        }
+        return true;
+    }
+
+    bool checkOtherWallNeighbours(GameObject go)
+    {
+        Vector3 newpos = new Vector3(go.transform.position.x, 15.0f, go.transform.position.z);
+        Collider[] coll = Physics.OverlapCapsule(newpos, new Vector3(newpos.x, (newpos.y - 15f), newpos.z), 1.5f);
+        i = 0;
+        while (i < coll.Length)
+        {
+            if (coll[i].gameObject.tag == "Wall" && !wallist.Contains(coll[i].gameObject)) //check if collider is wall and not in list
+            {
+                wallist.Add(coll[i].gameObject);
+                if (wallist.Count > wallrowcap) //remove wall (aka not spawn it) if there already is 4 walls in clumped together
+                {
+                    return false;
+                    //alternatively:
+                    //Network.Destroy(GetComponent<NetworkView>().viewID);
+                }
+                if (!checkOtherWallNeighbours(coll[i].gameObject))
+                {
+                    return false;
+                }
+            }
+            i++;
+        }
+        return true;
     }
 
 }

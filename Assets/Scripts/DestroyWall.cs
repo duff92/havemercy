@@ -5,6 +5,7 @@ public class DestroyWall : Photon.MonoBehaviour
 {
     public float wallLifetime = 5.0f;
     private double initiateWall = 0.0f;
+    private bool stopRPC = false;
 
     public void Start()
     {
@@ -16,7 +17,11 @@ public class DestroyWall : Photon.MonoBehaviour
         if(PhotonNetwork.time - initiateWall > wallLifetime)
         {
             Debug.Log("Destroy wall");
-            photonView.RPC("RemoveWall", PhotonTargets.MasterClient);
+            if (!stopRPC)
+            {
+                stopRPC = true;
+                photonView.RPC("RemoveWall", PhotonTargets.MasterClient);
+            }
         }
     }
 

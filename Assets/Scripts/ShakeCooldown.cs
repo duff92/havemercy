@@ -8,6 +8,8 @@ public class ShakeCooldown : MonoBehaviour
     public Image cooldown;
     public bool coolingDown;
     public float waitTime = 20.0f;
+    public float hideTime = 10.0f;
+    private float hideStart = 0.0f;
 
     private float accelerometerUpdateInterval = 1.0f / 60.0f;
     private float lowPassKernelWidthInSeconds = 1.0f;
@@ -19,6 +21,7 @@ public class ShakeCooldown : MonoBehaviour
     private Vector3 deltaAcceleration;
 
     public bool isPhoneShaking;
+    public bool hideTheObject;
 
     void Start()
     {
@@ -26,6 +29,7 @@ public class ShakeCooldown : MonoBehaviour
         shakeDetectionThreshold *= shakeDetectionThreshold;
         lowPassValue = Input.acceleration;
         isPhoneShaking = false;
+        hideTheObject = false;
     }
 
     // Update is called once per frame
@@ -45,11 +49,22 @@ public class ShakeCooldown : MonoBehaviour
         acceleration = Input.acceleration;
         lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
         deltaAcceleration = acceleration - lowPassValue;
-        if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold && coolingDown == false)
+        if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold && coolingDown == false && hideTheObject == false)
         {
             // Debug.Log("Phone is shaking! - " + isPhoneShaking);
             resetCooldown();
             isPhoneShaking = true;
+            hideTheObject = true;
+        }
+
+        if (hideStart >= hideTime && hideTheObject == true)
+        {
+            hideTheObject = false;
+            hideStart = 0.0f;
+        }
+        else if (hideTheObject == true)
+        {
+            hideStart += Time.deltaTime;
         }
 
     }
