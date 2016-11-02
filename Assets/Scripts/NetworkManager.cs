@@ -41,6 +41,7 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         PhotonNetwork.logLevel = PhotonLogLevel.Full;
         PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms. 
+        audienceCamera.GetComponent<AudioListener>().enabled = false;
     }
 
     public virtual void Update()
@@ -79,7 +80,6 @@ public class NetworkManager : Photon.MonoBehaviour
     {
         if (audienceView)
         {
-            audienceCamera.enabled = true;
             GameObject.Find("FakeObjectiveButton").SetActive(false);
             GameObject.Find("FakeObjectiveBackground").SetActive(false);
             GameObject.Find("ShakeButton").SetActive(false);
