@@ -245,7 +245,6 @@ public class OnClickInstantiate : MonoBehaviour
         ArrayList firstneighbours = new ArrayList();
         colliders = Physics.OverlapCapsule(pos, new Vector3(pos.x, (pos.y - 15f), pos.z), 1.5f);
         i = 0;
-        Debug.Log("Collider no: " + colliders.Length);
         while (i < colliders.Length)
         {
             //destroy cube if its adjacent to objective or player
@@ -273,10 +272,8 @@ public class OnClickInstantiate : MonoBehaviour
             bool candrop = checkOtherWallNeighbours(go);
             if (!candrop)
             {
-                Debug.Log("return false");
                 return false;
             }
-            Debug.Log("Wallist length: " + wallist.Count);
         }
         return true;
     }
