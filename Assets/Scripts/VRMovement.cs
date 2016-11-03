@@ -117,8 +117,6 @@ public class VRMovement : MonoBehaviour
 
         dir = LowPassAccelerometer(); // get the movement from the mobile
 
-        Debug.Log(dir);
-
         movementData = Mathf.Abs(dir.y);
 
         if (movementData >= 1.05)

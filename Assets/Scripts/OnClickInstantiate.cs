@@ -28,9 +28,11 @@ public class OnClickInstantiate : MonoBehaviour
     int i;
     public int wallrowcap = 4;
     ArrayList wallist = new ArrayList();
+    private bool isVR = false;
 
     void Start()
     {
+        isVR = GameObject.FindGameObjectWithTag("_SCRIPTS").GetComponent<NetworkManager>().VRMode;
     }
 
     void Update()
@@ -43,9 +45,9 @@ public class OnClickInstantiate : MonoBehaviour
             // only use PhotonNetwork.Instantiate while in a room.
             return;
         }
-
+        
         //touchbased input instead of clicks
-        if (Input.touchCount > 0 && drawWalls)
+        if (Input.touchCount > 0 && drawWalls && !isVR)
         {
             ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 
@@ -78,11 +80,12 @@ public class OnClickInstantiate : MonoBehaviour
 
             }
         }
-        if (Input.GetMouseButton(0) && drawWalls)
+        if (Input.GetMouseButton(0) && drawWalls && !isVR)
         {
+            
             //ger error om man spelar som vr och försöker skapa väggar
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
+            
             if (Physics.Raycast(ray, out hit))
             {
                 Vector3 hitpos = hit.point;
@@ -107,7 +110,7 @@ public class OnClickInstantiate : MonoBehaviour
                 }
             }
         }
-        if (!drawWalls)
+        if (!drawWalls && !isVR)
         {
             if (Input.touchCount > 0)
             {
