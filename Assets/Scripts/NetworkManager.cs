@@ -84,6 +84,9 @@ public class NetworkManager : Photon.MonoBehaviour
             GameObject.Find("FakeObjectiveBackground").SetActive(false);
             GameObject.Find("ShakeButton").SetActive(false);
             GameObject.Find("ShakeBackground").SetActive(false);
+
+            audienceCamera.enabled = true;
+            audienceCamera.GetComponent<AudienceCameraLerp>().enabled = true;
         }
         else
         {
